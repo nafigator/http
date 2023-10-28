@@ -35,5 +35,5 @@ fmt.Println(headers.Normalize("conTent-tYpe"))
 
 [Release img]: https://img.shields.io/badge/release-0.1.0-red.svg
 [Release src]: https://github.com/nafigator/http/headers
-[Github main status src]: https://github.com/nafigator/http/headers
+[Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=feat

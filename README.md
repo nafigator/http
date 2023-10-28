@@ -1,2 +1,2 @@
 # http
-Go HTTP packages 
+Collection of Go HTTP packages

@@ -1,6 +1,6 @@
 # headers
 
-[![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src]
+[![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card src]][Go Report Card badge]
 
 HTTP header constants for Gophers.
 
@@ -39,3 +39,5 @@ go test -C headers ./...
 [Release src]: https://github.com/nafigator/http/headers
 [Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=feat
+[Go Report Card src]: https://goreportcard.com/badge/github.com/nafigator/http/headers
+[Go Report Card badge]: https://goreportcard.com/report/github.com/nafigator/http/headers

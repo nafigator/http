@@ -10,10 +10,6 @@ HTTP header constants for Gophers.
 go install github.com/nafigator/http/headers
 ```
 
-## Documentation
-
-https://godoc.org/github.com/nafigator/http/headers
-
 ## Usage
 
 ```go
@@ -32,6 +28,12 @@ fmt.Println(headers.IfNoneMatch)
 fmt.Println(headers.Normalize("conTent-tYpe"))
 // -> "Content-Type"
 ```
+
+## Tests
+```shell
+go test -C headers ./...
+```
+
 
 [Release img]: https://img.shields.io/badge/release-1.0.0-green.svg
 [Release src]: https://github.com/nafigator/http/headers

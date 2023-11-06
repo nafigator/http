@@ -56,26 +56,35 @@ jobs:
     name: tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        cache-dependency-path: '**/go.sum'
-        go-version: '1.20'
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          cache-dependency-path: '**/go.sum'
+          go-version: '1.20'
 
-    - name: Test headers package
-      run: go test -C headers -v ./... -coverprofile=./headers.out
+      - name: Test headers package
+        run: go test -C headers -v ./... -race -coverprofile=./headers.out -covermode=atomic
 
-    - name: Test coverage headers package
-      uses: vladopajic/go-test-coverage@v2
-      with:
-        # Configure action using config file (option 1)
-        #config: ./headers/.testcoverage.yml
+      - name: Check headers package coverage
+        uses: vladopajic/go-test-coverage@v2
+        with:
+          # Configure action using config file (option 1)
+          #config: ./headers/.testcoverage.yml
 
-        # Configure action by specifying input parameters individually (option 2)
-        profile: ./headers/headers.out
-        local-prefix: github.com/nafigator/http
-        threshold-file: 80
-        threshold-package: 80
-        threshold-total: 95
+          # Configure action by specifying input parameters individually (option 2)
+          profile: ./headers/headers.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Upload headers coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./headers/headers.out
+          flags: unittests
+          name: codecov-headers
+          verbose: false

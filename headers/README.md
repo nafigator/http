@@ -1,6 +1,6 @@
 # headers
 
-[![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card src]][Go Report Card badge] [![Coverage report][Codecov report badge]][Codecov report src]
+[![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src]
 
 HTTP header constants for Gophers.
 
@@ -35,11 +35,11 @@ go test -C headers ./...
 ```
 
 
-[Release img]: https://img.shields.io/badge/release-1.0.3-green.svg
+[Release img]: https://img.shields.io/badge/release-1.0.4-green.svg
 [Release src]: https://github.com/nafigator/http/headers
 [Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
-[Go Report Card src]: https://goreportcard.com/badge/github.com/nafigator/http/headers
-[Go Report Card badge]: https://goreportcard.com/report/github.com/nafigator/http/headers
+[Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/headers
+[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/headers
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg

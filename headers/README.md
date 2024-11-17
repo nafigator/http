@@ -19,14 +19,9 @@ import (
   "github.com/nafigator/http/headers"
 )
 
-fmt.Println(headers.AcceptCharset)
-// -> "Accept-Charset"
-
-fmt.Println(headers.IfNoneMatch)
-// -> "If-None-Match"
-
-fmt.Println(headers.Normalize("conTent-tYpe"))
-// -> "Content-Type"
+fmt.Println(headers.AcceptCharset)              // Accept-Charset
+fmt.Println(headers.IfNoneMatch)                // If-None-Match
+fmt.Println(headers.Normalize("conTent-tYpe"))  // Content-Type
 ```
 
 ## Tests
@@ -35,7 +30,7 @@ go test -C headers ./...
 ```
 
 
-[Release img]: https://img.shields.io/badge/release-1.0.4-green.svg
+[Release img]: https://img.shields.io/badge/release-1.0.5-green.svg
 [Release src]: https://github.com/nafigator/http/headers
 [Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main

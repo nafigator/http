@@ -25,6 +25,7 @@ const (
 	ETag                          = "ETag"
 	Expect                        = "Expect"
 	Expires                       = "Expires"
+	From                          = "From"
 	DoNotTrack                    = "DNT"
 	IfMatch                       = "If-Match"
 	IfModifiedSince               = "If-Modified-Since"

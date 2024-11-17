@@ -30,7 +30,7 @@ go test -C headers ./...
 ```
 
 
-[Release img]: https://img.shields.io/badge/release-1.0.5-green.svg
+[Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal
 [Release src]: https://github.com/nafigator/http/headers
 [Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main

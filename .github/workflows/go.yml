@@ -62,19 +62,19 @@ jobs:
         uses: actions/setup-go@v4
         with:
           cache-dependency-path: '**/go.sum'
-          go-version: '1.20'
+          go-version: '1.23'
 
       - name: Test headers package
-        run: go test -C headers -v ./... -race -coverprofile=./headers.out -covermode=atomic
+        run: go test -C tests -v ./... -race -coverprofile=./tests.out -covermode=atomic
 
       - name: Check headers package coverage
         uses: vladopajic/go-test-coverage@v2
         with:
           # Configure action using config file (option 1)
-          #config: ./headers/.testcoverage.yml
+          #config: ./tests/.testcoverage.yml
 
           # Configure action by specifying input parameters individually (option 2)
-          profile: ./headers/headers.out
+          profile: ./tests/tests.out
           local-prefix: github.com/nafigator/http
           threshold-file: 100
           threshold-package: 100
@@ -84,7 +84,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./headers/headers.out
+          files: ./tests/tests.out
           flags: unittests
-          name: codecov-headers
+          name: codecov-http
           verbose: false

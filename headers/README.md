@@ -25,6 +25,7 @@ fmt.Println(headers.Normalize("conTent-tYpe"))  // Content-Type
 ```
 
 ## Tests
+Clone repo and run:
 ```shell
 go test -C tests ./...
 ```

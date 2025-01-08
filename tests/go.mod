@@ -4,12 +4,12 @@ go 1.23
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/nafigator/http/client/dumper v0.0.0-20250108025141-1d4ab39086c7
+	github.com/nafigator/http/client/dumper v0.1.0
 	github.com/nafigator/http/headers v1.0.5
-	github.com/nafigator/http/masker/auth v0.0.0-20250108025141-1d4ab39086c7
-	github.com/nafigator/http/masker/query v0.0.0-20250108025141-1d4ab39086c7
-	github.com/nafigator/http/masker/scalar v0.0.0-20250108025141-1d4ab39086c7
-	github.com/nafigator/http/storage/debug v0.0.0-20250108025141-1d4ab39086c7
+	github.com/nafigator/http/masker/auth v0.1.0
+	github.com/nafigator/http/masker/query v0.1.0
+	github.com/nafigator/http/masker/scalar v0.1.0
+	github.com/nafigator/http/storage/debug v0.1.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.5.0
 	go.uber.org/zap v1.27.0

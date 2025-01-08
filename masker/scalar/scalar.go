@@ -20,7 +20,7 @@ type Masker struct {
 	next     next
 }
 
-// New creates masker instance
+// New creates masker instance.
 func New(params []string, next next) *Masker {
 	return &Masker{
 		params:   params,
@@ -29,7 +29,7 @@ func New(params []string, next next) *Masker {
 	}
 }
 
-// Mask masks value of JSON scalars
+// Mask masks value of JSON scalars.
 func (m *Masker) Mask(req *http.Request, dump *string) {
 	for _, p := range m.params {
 		re := regexp.MustCompile("(\"" + p + "\"\\s*:\\s*\"?)(null|true|false|[\\d]+|[^\"]+)(\")?")
@@ -59,7 +59,7 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 	}
 }
 
-// LeaveUnmasked sets unmasked chars count at the end of secret
+// LeaveUnmasked sets unmasked chars count at the end of secret.
 func (m *Masker) LeaveUnmasked(c int) {
 	m.unmasked = c
 }

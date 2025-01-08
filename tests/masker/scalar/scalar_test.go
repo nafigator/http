@@ -1,7 +1,7 @@
 package scalar_test
 
 import (
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -58,12 +58,12 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"name":"Николай","password":"mega-super-pass"}`)),
+				Body: io.NopCloser(strings.NewReader(`{"name":"Николай","password":"mega-super-pass"}`)),
 				Host: "avito.ru",
 			},
 			params:   []string{"password"},
-			dump:     "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Николай\",\"password\":\"mega-super-pass\"}\r\n",
-			expected: "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Николай\",\"password\":\"********er-pass\"}\r\n",
+			dump:     "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Николай\",\"password\":\"mega-super-pass\"}\r\n", //nolint:lll
+			expected: "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Николай\",\"password\":\"********er-pass\"}\r\n", //nolint:lll
 		},
 		"request with null value replacement": {
 			request: http.Request{
@@ -79,13 +79,13 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"secret-nullable":null}`)),
+				Body: io.NopCloser(strings.NewReader(`{"secret-nullable":null}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(0),
 			params:        []string{"secret-nullable"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-nullable\":null}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-nullable\":****}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-nullable\":null}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-nullable\":****}\r\n", //nolint:lll
 		},
 		"request with bool value replacement": {
 			request: http.Request{
@@ -101,13 +101,13 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"bool1":true,"bool2":false}`)),
+				Body: io.NopCloser(strings.NewReader(`{"bool1":true,"bool2":false}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(0),
 			params:        []string{"bool1", "bool2"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"bool1\":true,\"bool2\":false}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"bool1\":****,\"bool2\":*****}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"bool1\":true,\"bool2\":false}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"bool1\":****,\"bool2\":*****}\r\n", //nolint:lll
 		},
 		"request with int value replacement": {
 			request: http.Request{
@@ -123,13 +123,13 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
+				Body: io.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(2),
 			params:        []string{"secret-int"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n", //nolint:lll
 		},
 		"request with int value replacement and bearer": {
 			request: http.Request{
@@ -146,14 +146,14 @@ func dataProvider() map[string]testCase {
 					"Content-Type":  {"application/json"},
 					"Authorization": {"Bearer super-secret-mega-token-forever"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
+				Body: io.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(2),
 			next:          auth.New(nil),
 			params:        []string{"secret-int"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n", //nolint:lll
 		},
 		"request with int and high unmasked": {
 			request: http.Request{
@@ -169,13 +169,13 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
+				Body: io.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(12345),
 			params:        []string{"secret-int"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
 		},
 		"request without matches": {
 			request: http.Request{
@@ -191,13 +191,13 @@ func dataProvider() map[string]testCase {
 					"Host":         {"avito.ru"},
 					"Content-Type": {"application/json"},
 				},
-				Body: ioutil.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
+				Body: io.NopCloser(strings.NewReader(`{"secret-int":123456789}`)),
 				Host: "avito.ru",
 			},
 			leaveUnmasked: toPtr(12345),
 			params:        []string{"name", "password"},
-			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
-			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n",
+			dump:          "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
+			expected:      "API exchange\nGET /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
 		},
 	}
 }

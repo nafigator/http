@@ -25,7 +25,7 @@ func TestRun(t *testing.T) {
 
 func applyPatch(p patch) *monkey.PatchGuard {
 	if p == patchDumpResponse {
-		return monkey.Patch(httputil.DumpResponse, func(response *http.Response, body bool) ([]byte, error) {
+		return monkey.Patch(httputil.DumpResponse, func(_ *http.Response, _ bool) ([]byte, error) {
 			return nil, errors.New("dump response error")
 		})
 	}

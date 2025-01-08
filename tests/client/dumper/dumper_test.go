@@ -31,7 +31,7 @@ const (
 	unexpectedResponse = "Unexpected response"
 	unexpectedError    = "Unexpected error"
 	URL                = "https://localhost"
-	JsonMIME           = "application/json"
+	JSONMime           = "application/json"
 )
 
 type masker interface {
@@ -98,15 +98,15 @@ func (s *suite) TestRoundTrip() {
 func roundRobinProvider() []roundRobinCase {
 	reqBody := []byte(`{"name":"Boris", "age": 20}`)
 	request := httptest.NewRequest(http.MethodPost, URL, bytes.NewBuffer(reqBody))
-	request.Header.Set(headers.ContentType, JsonMIME)
+	request.Header.Set(headers.ContentType, JSONMime)
 
 	errResponse := httptest.NewRecorder()
 	errResponse.Code = 500
-	errResponse.Body = bytes.NewBuffer([]byte(`{"errors":[{"code":1,"message":"internal error"}]}`))
+	errResponse.Body = bytes.NewBufferString(`{"errors":[{"code":1,"message":"internal error"}]}`)
 
 	badResponse := httptest.NewRecorder()
 	badResponse.Code = 500
-	badResponse.Body = bytes.NewBuffer([]byte(`{"errors":[{"code":1,"message":"internal error"}]}`))
+	badResponse.Body = bytes.NewBufferString(`{"errors":[{"code":1,"message":"internal error"}]}`)
 	_ = badResponse.Result().Body.Close()
 
 	return []roundRobinCase{
@@ -136,7 +136,7 @@ func roundRobinProvider() []roundRobinCase {
 		},
 		{
 			name:             "dump request error",
-			request:          httptest.NewRequest(http.MethodPost, "/ttt", bytes.NewBuffer([]byte("Foo"))),
+			request:          httptest.NewRequest(http.MethodPost, "/ttt", bytes.NewBufferString("Foo")),
 			responseRecorder: httptest.NewRecorder(),
 			expectedError:    nil,
 			expected: []observer.LoggedEntry{{

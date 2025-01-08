@@ -26,12 +26,11 @@ fmt.Println(headers.Normalize("conTent-tYpe"))  // Content-Type
 
 ## Tests
 ```shell
-go test -C headers ./...
+go test -C tests ./...
 ```
 
-
-[Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal
-[Release src]: https://github.com/nafigator/http/headers
+[Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal&filter=headers*
+[Release src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status src]: https://github.com/nafigator/http/tree/main/headers
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
 [Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/headers

@@ -4,9 +4,9 @@ go 1.23
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/nafigator/http/client/dumper v0.1.0
+	github.com/nafigator/http/client/dumper v0.1.1
 	github.com/nafigator/http/headers v1.0.6
-	github.com/nafigator/http/masker/auth v0.1.0
+	github.com/nafigator/http/masker/auth v0.1.1
 	github.com/nafigator/http/masker/query v0.1.0
 	github.com/nafigator/http/masker/scalar v0.1.0
 	github.com/nafigator/http/storage/debug v0.1.0

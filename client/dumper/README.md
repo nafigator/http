@@ -1,8 +1,8 @@
-# headers
+# HTTP-client dumper
 
 [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src]
 
-HTTP-client dumper.
+Easy to use HTTP-client dumper.
 
 ## Installation
 

@@ -64,7 +64,7 @@ jobs:
           cache-dependency-path: '**/go.sum'
           go-version: '1.23'
 
-      - name: Test headers package
+      - name: Test all packages
         run: go test -C tests -v ./... -race -coverprofile=./tests.out -covermode=atomic
 
       - name: Check headers package coverage
@@ -80,7 +80,7 @@ jobs:
           threshold-package: 100
           threshold-total: 100
 
-      - name: Upload headers coverage to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

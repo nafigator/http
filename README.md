@@ -14,7 +14,7 @@ Collection of Go HTTP packages
 [Package](https://github.com/nafigator/http/tree/main/masker/scalar) for hiding sensitive data in POST-data of HTTP-dumps.
 
 ## storage/debug
-[Package](https://github.com/nafigator/http/tree/main/masker/scalar) with implementation output HTTP-dumps as logger DEBUG messages.
+[Package](https://github.com/nafigator/http/tree/main/masker/scalar) with implementation of output HTTP-dumps as logger DEBUG messages.
 
 ## headers
 [Package](https://github.com/nafigator/http/blob/main/headers/README.md) with constants for HTTP headers.

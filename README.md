@@ -1,20 +1,27 @@
 # http
 Collection of Go HTTP packages
 
-## client/dumper
+## Packages
+### client/dumper
 [Package](https://github.com/nafigator/http/blob/main/client/dumper/README.md) for dumping HTTP-client requests/responses.
 
-## masker/auth
+### masker/auth
 [Package](https://github.com/nafigator/http/tree/main/masker/auth) for hiding sensitive data in Authorization header of HTTP-dumps.
 
-## masker/json
+### masker/json
 [Package](https://github.com/nafigator/http/tree/main/masker/json) for hiding sensitive data in JSON values of HTTP bodies.
 
-## masker/query
+### masker/query
 [Package](https://github.com/nafigator/http/tree/main/masker/query) for hiding sensitive data in URL-params of HTTP-dumps.
 
-## storage/debug
+### storage/debug
 [Package](https://github.com/nafigator/http/tree/main/storage/debug) with implementation of output HTTP-dumps as logger DEBUG messages.
 
-## headers
+### headers
 [Package](https://github.com/nafigator/http/blob/main/headers/README.md) with constants for HTTP headers.
+
+## Versioning
+Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
+as a public API. Read more on [SemVer.org][semver src].
+
+[semver src]: http://semver.org

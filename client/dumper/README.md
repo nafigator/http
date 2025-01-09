@@ -1,14 +1,41 @@
+<a id="readme-top"></a>
 # HTTP-client dumper
 
 [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src]
 
 Easy to use HTTP-client dumper.
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li>
+        <a href="#advanced-usage">Advanced usage</a>
+        <ul>
+            <li><a href="#masking">Masking</a></li>
+            <ul>
+                <li><a href="#auth">auth</a></li>
+                <li><a href="#query">query</a></li>
+                <li><a href="#json">json</a></li>
+            </ul>
+            <li><a href="#combined-masking">Combined Masking</a></li>
+            <li><a href="#control-unmasked-symbols">Control unmasked symbols</a></li>
+            <li><a href="#custom-template">Custom template</a></li>
+            <li><a href="#custom-masker">Custom masker</a></li>
+        </ul>
+    </li>
+    <li><a href="#tests">Tests</a></li>
+  </ol>
+</details>
+
 ## Installation
 
 ```sh
 go install github.com/nafigator/http/client/dumper
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
@@ -76,6 +103,7 @@ X-Frame-Options: DENY
 
 {"error": "missing api key"}
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Advanced usage
 ### Masking
@@ -120,6 +148,7 @@ X-Frame-Options: DENY
 
 {"error": "invalid api key"}
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### query
 Example:
@@ -156,6 +185,7 @@ X-Frame-Options: DENY
 
 {"error": "invalid secret"}
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### json
 Example:
@@ -194,6 +224,8 @@ X-Frame-Options: DENY
 
 {"error":"invalid secret"}
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Combined masking
 Optionally you can combine maskers as follows:
 ```go
@@ -205,6 +237,7 @@ Optionally you can combine maskers as follows:
     WithMasker(m) // Add auth and JSON masker
   ...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Control unmasked symbols
 By default, all maskers leave 7 unmasked symbols at end for debug purpose. You can change this using `WithUnmasked()`
@@ -217,6 +250,41 @@ method. Example:
     WithMasker(m) // Add auth with entire value masker
   ...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Custom template
+You can redefine default dump output template `"HTTP dump:\n%s\n\n%s\n"`. First placeholder is for request, second
+for response. Example:
+```go
+  ...
+  // Wrap default http transport by dumper
+  d := dumper.New(
+    http.DefaultTransport,
+    debug.New(log), // Use debug output or implement your own
+  )
+  d.WithTemplate("Dump:\n%s\n✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭\n%s\n")
+  ...
+```
+This example produces output:
+```shell
+2025-01-09 16:03:20.461	DEBUG	Dump:
+GET /api/v3/checks/ HTTP/1.1
+Host: example.io
+User-Agent: Go-http-client/1.1
+Accept-Encoding: gzip
+
+
+✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭
+
+HTTP/2.0 401 Unauthorized
+Content-Length: 28
+Content-Type: application/json
+Date: Thu, 09 Jan 2025 13:03:20 GMT
+X-Frame-Options: DENY
+
+{"error": "missing api key"}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Custom masker
 You can implement your own masker with interface:
@@ -226,12 +294,14 @@ You can implement your own masker with interface:
   }
 ```
 Where second parameter is pointer to final dump.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Tests
 Clone repo and run:
 ```shell
 go test -C tests ./...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 [Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal&filter=client/dumper*
 [Release src]: https://github.com/nafigator/http/tree/main/client/dumper

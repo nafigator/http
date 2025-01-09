@@ -125,7 +125,7 @@ func main() {
   ...
   // Wrap default http transport by dumper
   d := dumper.New(http.DefaultTransport, debug.New(log)).
-	  WithMasker(auth.New()) // Add auth masker
+    WithMasker(auth.New()) // Add auth masker
   ...
 ```
 
@@ -163,7 +163,7 @@ func main() {
   ...
   // Wrap default http transport by dumper
   d := dumper.New(http.DefaultTransport, debug.New(log)).
-	  WithMasker(query.New([]string{"user","secret"})) // Add query masker
+    WithMasker(query.New([]string{"user","secret"})) // Add query masker
   ...
 ```
 
@@ -200,7 +200,7 @@ func main() {
   ...
   // Wrap default http transport by dumper
   d := dumper.New(http.DefaultTransport, debug.New(log)).
-	  WithMasker(json.New([]string{"user","secret"})) // Add JSON masker
+    WithMasker(json.New([]string{"user","secret"})) // Add JSON masker
   ...
 ```
 
@@ -289,9 +289,9 @@ X-Frame-Options: DENY
 ### Custom masker
 You can implement your own masker with interface:
 ```go
-  type masker interface {
-    Mask(*http.Request, *string)
-  }
+type masker interface {
+  Mask(*http.Request, *string)
+}
 ```
 Where second parameter is pointer to final dump.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -23,7 +23,7 @@ type flusher interface {
 }
 
 type logger interface {
-	Warn(args ...interface{})
+	Error(args ...interface{})
 }
 
 type HTTPDumper struct {
@@ -36,30 +36,44 @@ type HTTPDumper struct {
 
 // New creates http-dumper instance.
 func New(
-	template string,
 	next http.RoundTripper,
-	masker masker,
 	flusher flusher,
-	log logger,
-) http.RoundTripper {
-	if template == "" {
-		template = defaultTemplate
-	}
-
+) *HTTPDumper {
 	return &HTTPDumper{
-		template: template,
+		template: defaultTemplate,
 		next:     next,
-		masker:   masker,
 		flusher:  flusher,
-		log:      log,
 	}
+}
+
+// WithTemplate initializes new custom output template.
+func (h *HTTPDumper) WithTemplate(t string) *HTTPDumper {
+	h.template = t
+
+	return h
+}
+
+// WithMasker initializes sensitive data masker for dumper output.
+func (h *HTTPDumper) WithMasker(m masker) *HTTPDumper {
+	h.masker = m
+
+	return h
+}
+
+// WithErrLogger initializes logger for dump errors.
+func (h *HTTPDumper) WithErrLogger(log logger) *HTTPDumper {
+	h.log = log
+
+	return h
 }
 
 // RoundTrip http.RoundTripper implementation.
 func (h *HTTPDumper) RoundTrip(req *http.Request) (*http.Response, error) {
 	b, e := httputil.DumpRequestOut(req, needBody(req.Header.Get(headers.ContentType)))
 	if e != nil {
-		h.log.Warn("HTTP request dump error: ", e)
+		if h.log != nil {
+			h.log.Error("HTTP request dump error: ", e)
+		}
 
 		dump := ""
 
@@ -92,7 +106,9 @@ func (h *HTTPDumper) handleRequest(req *http.Request, reqDump string) (*http.Res
 
 	b, e = httputil.DumpResponse(res, needBody(res.Header.Get(headers.ContentType)))
 	if e != nil {
-		h.log.Warn("HTTP response dump error: ", e)
+		if h.log != nil {
+			h.log.Error("HTTP response dump error: ", e)
+		}
 
 		msg := fmt.Sprintf(h.template, reqDump, "")
 		h.flusher.Flush(ctx, msg)

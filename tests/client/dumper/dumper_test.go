@@ -19,12 +19,13 @@ import (
 )
 
 const (
-	msgOK               = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n" //nolint:lll
-	internalError       = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\ninternal error\n"                               //nolint:lll
-	responseDumpError   = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n\n"                                             //nolint:lll
-	requestDumpError    = "HTTP dump:\n\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"
-	requestDumpWarning  = "HTTP request dump error: unsupported protocol scheme \"\""
-	responseDumpWarning = "HTTP response dump error: dump response error"
+	msgOK             = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"                   //nolint:lll
+	msgOKWithTemplate = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n==============\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n" //nolint:lll
+	internalError     = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\ninternal error\n"                                                 //nolint:lll
+	responseDumpError = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n\n"                                                               //nolint:lll
+	requestDumpError  = "HTTP dump:\n\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"
+	requestDumpErr    = "HTTP request dump error: unsupported protocol scheme \"\""
+	responseDumpErr   = "HTTP response dump error: dump response error"
 
 	unexpectedMsgCount = "Unexpected messages count"
 	unexpectedResults  = "Unexpected dump results"
@@ -45,6 +46,7 @@ type roundRobinCase struct {
 	request          *http.Request
 	responseRecorder *httptest.ResponseRecorder
 	usePatch         patch
+	template         string
 	masker           masker
 	expectedError    error
 	expected         []observer.LoggedEntry
@@ -63,7 +65,15 @@ func (s *suite) TestRoundTrip() {
 			ob, logs := observer.New(c.expectedMsgLevel)
 			logger := zap.New(ob).Sugar()
 			flusher := debug.New(logger)
-			d := dumper.New("", next, c.masker, flusher, logger)
+			d := dumper.New(next, flusher).WithErrLogger(logger)
+
+			if c.template != "" {
+				d.WithTemplate(c.template)
+			}
+
+			if c.masker != nil {
+				d.WithMasker(c.masker)
+			}
 
 			next.EXPECT().
 				RoundTrip(c.request).
@@ -140,7 +150,7 @@ func roundRobinProvider() []roundRobinCase {
 			responseRecorder: httptest.NewRecorder(),
 			expectedError:    nil,
 			expected: []observer.LoggedEntry{{
-				Entry:   zapcore.Entry{Level: zap.WarnLevel, Message: requestDumpWarning},
+				Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: requestDumpErr},
 				Context: []zapcore.Field{},
 			}, {
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: requestDumpError},
@@ -156,7 +166,7 @@ func roundRobinProvider() []roundRobinCase {
 			expectedError:    nil,
 			usePatch:         patchDumpResponse,
 			expected: []observer.LoggedEntry{{
-				Entry:   zapcore.Entry{Level: zap.WarnLevel, Message: responseDumpWarning},
+				Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: responseDumpErr},
 				Context: []zapcore.Field{},
 			}, {
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: responseDumpError},
@@ -170,9 +180,22 @@ func roundRobinProvider() []roundRobinCase {
 			request:          request,
 			responseRecorder: httptest.NewRecorder(),
 			expectedError:    nil,
-			masker:           query.New([]string{"password"}, nil),
+			masker:           query.New([]string{"password"}),
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOK},
+				Context: []zapcore.Field{},
+			}},
+			expectedMsgLevel: zap.DebugLevel,
+			expectedMsgCount: 1,
+		},
+		{
+			name:             "200 response with template",
+			request:          request,
+			responseRecorder: httptest.NewRecorder(),
+			expectedError:    nil,
+			template:         "HTTP dump:\n%s\n\n==============\n\n%s\n",
+			expected: []observer.LoggedEntry{{
+				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOKWithTemplate},
 				Context: []zapcore.Field{},
 			}},
 			expectedMsgLevel: zap.DebugLevel,

@@ -23,10 +23,9 @@ type Masker struct {
 }
 
 // New creates masker instance.
-func New(next next) *Masker {
+func New() *Masker {
 	return &Masker{
 		unmasked: defaultUnmaskedLength,
-		next:     next,
 	}
 }
 
@@ -52,7 +51,16 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 	}
 }
 
-// LeaveUnmasked sets unmasked chars count at the end of secret.
-func (m *Masker) LeaveUnmasked(c int) {
+// WithNext sets next masker for nested processing.
+func (m *Masker) WithNext(n next) *Masker {
+	m.next = n
+
+	return m
+}
+
+// WithUnmasked sets unmasked chars count at the end of secret.
+func (m *Masker) WithUnmasked(c int) *Masker {
 	m.unmasked = c
+
+	return m
 }

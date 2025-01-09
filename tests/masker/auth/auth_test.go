@@ -15,20 +15,20 @@ type next interface {
 }
 
 type testCase struct {
-	request       http.Request
-	next          next
-	dump          string
-	leaveUnmasked *int
-	expected      string
+	request  http.Request
+	next     next
+	dump     string
+	unmasked *int
+	expected string
 }
 
 func TestMask(t *testing.T) {
 	for name, c := range dataProvider() {
 		t.Run(name, func(t *testing.T) {
-			a := auth.New(c.next)
+			a := auth.New().WithNext(c.next)
 
-			if c.leaveUnmasked != nil {
-				a.LeaveUnmasked(*c.leaveUnmasked)
+			if c.unmasked != nil {
+				a.WithUnmasked(*c.unmasked)
 			}
 
 			a.Mask(&c.request, &c.dump)
@@ -95,7 +95,7 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			next:     query.New([]string{"secret", "password"}, nil),
+			next:     query.New([]string{"secret", "password"}),
 			dump:     "API exchange\nGET /user/153?secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 			expected: "API exchange\nGET /user/153?secret=*****234FFD5&password=*******perPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
@@ -115,7 +115,7 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			next:     query.New([]string{"secret", "password"}, nil),
+			next:     query.New([]string{"secret", "password"}),
 			dump:     "API exchange\nGET /user/154?quote=1&secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 			expected: "API exchange\nGET /user/154?quote=1&secret=*****234FFD5&password=*******perPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
@@ -135,9 +135,9 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			leaveUnmasked: toPtr(4),
-			dump:          "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
-			expected:      "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ***************************ever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			unmasked: toPtr(4),
+			dump:     "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			expected: "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ***************************ever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
 		"request with bearer fully masked": {
 			request: http.Request{
@@ -155,9 +155,9 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			leaveUnmasked: toPtr(0),
-			dump:          "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
-			expected:      "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer *******************************\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			unmasked: toPtr(0),
+			dump:     "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			expected: "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer *******************************\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
 	}
 }

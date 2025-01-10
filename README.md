@@ -23,6 +23,9 @@ Collection of Go HTTP packages
 #### headers
 [Package](https://github.com/nafigator/http/blob/main/headers/README.md) with constants for HTTP headers.
 
+#### mime
+[Package](https://github.com/nafigator/http/blob/main/mime/README.md) with constants for MIME types.
+
 ### Versioning
 Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
 as a public API. Read more on [SemVer.org][semver src].

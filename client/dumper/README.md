@@ -36,6 +36,7 @@ Easy to use HTTP-client dumper.
 
 ## Features
 * Easy of use
+* Ignore files in body
 * Sensitive data masking
 * Customizable
 

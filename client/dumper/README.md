@@ -26,6 +26,7 @@ Easy to use HTTP-client dumper.
             <li><a href="#error-handling">Error handling</a></li>
             <li><a href="#custom-template">Custom template</a></li>
             <li><a href="#custom-flusher">Custom flusher</a></li>
+            <li><a href="#custom-filter">Custom filter</a></li>
             <li><a href="#custom-masker">Custom masker</a></li>
         </ul>
     </li>
@@ -124,6 +125,9 @@ X-Frame-Options: DENY
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 </details>
+
+> By default, HTTP-requests without *Content-Type* header or *Content-Type* equal `application/octet-stream` dumps
+> without HTTP-body.
 
 
 ## Advanced usage
@@ -394,6 +398,42 @@ type flusher interface {
 }
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Custom filter
+If you don't want dump HTTP-bodies requests with specific Content-Type headers, redefine default filter function.
+```go
+// Requires Content-Type value as param.
+func(ct string) bool {
+  if ct == mime.Bin || ct == "" {
+    return false // do not dump files
+  }
+
+  return true
+}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<details>
+  <summary>Example</summary>
+
+```go
+  ...
+  // Wrap default http transport by dumper
+  d := dumper.New(
+    http.DefaultTransport,
+    debug.New(log), // Use debug output or implement your own
+  )
+  d.WithFilter(func(ct string) bool {
+    if ct == mime.PDF { // do not dump PDF file in body
+      return false
+    }
+
+    return true
+  })
+  ...
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 ### Custom masker
 You can implement your own masker with interface:

@@ -10,6 +10,7 @@ import (
 	"github.com/nafigator/http/client/dumper"
 	"github.com/nafigator/http/headers"
 	"github.com/nafigator/http/masker/query"
+	"github.com/nafigator/http/mime"
 	"github.com/nafigator/http/storage/debug"
 	"github.com/nafigator/http/tests/client/dumper/mocks"
 	"go.uber.org/mock/gomock"
@@ -20,6 +21,7 @@ import (
 
 const (
 	msgOK             = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"                   //nolint:lll
+	msgOKWithFilter   = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"                                                    //nolint:lll
 	msgOKWithTemplate = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n==============\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n" //nolint:lll
 	internalError     = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\ninternal error\n"                                                 //nolint:lll
 	responseDumpError = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n\n"                                                               //nolint:lll
@@ -32,7 +34,6 @@ const (
 	unexpectedResponse = "Unexpected response"
 	unexpectedError    = "Unexpected error"
 	URL                = "https://localhost"
-	JSONMime           = "application/json"
 )
 
 type masker interface {
@@ -48,6 +49,7 @@ type roundRobinCase struct {
 	usePatch         patch
 	template         string
 	masker           masker
+	filter           func(string) bool
 	expectedError    error
 	expected         []observer.LoggedEntry
 	expectedMsgLevel zapcore.Level
@@ -73,6 +75,10 @@ func (s *suite) TestRoundTrip() {
 
 			if c.masker != nil {
 				d.WithMasker(c.masker)
+			}
+
+			if c.filter != nil {
+				d.WithFilter(c.filter)
 			}
 
 			next.EXPECT().
@@ -108,7 +114,7 @@ func (s *suite) TestRoundTrip() {
 func roundRobinProvider() []roundRobinCase {
 	reqBody := []byte(`{"name":"Boris", "age": 20}`)
 	request := httptest.NewRequest(http.MethodPost, URL, bytes.NewBuffer(reqBody))
-	request.Header.Set(headers.ContentType, JSONMime)
+	request.Header.Set(headers.ContentType, mime.JSON)
 
 	errResponse := httptest.NewRecorder()
 	errResponse.Code = 500
@@ -196,6 +202,25 @@ func roundRobinProvider() []roundRobinCase {
 			template:         "HTTP dump:\n%s\n\n==============\n\n%s\n",
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOKWithTemplate},
+				Context: []zapcore.Field{},
+			}},
+			expectedMsgLevel: zap.DebugLevel,
+			expectedMsgCount: 1,
+		},
+		{
+			name:             "200 response with filter",
+			request:          request,
+			responseRecorder: httptest.NewRecorder(),
+			expectedError:    nil,
+			filter: func(ct string) bool {
+				if ct == mime.JSON {
+					return false
+				}
+
+				return true
+			},
+			expected: []observer.LoggedEntry{{
+				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOKWithFilter},
 				Context: []zapcore.Field{},
 			}},
 			expectedMsgLevel: zap.DebugLevel,

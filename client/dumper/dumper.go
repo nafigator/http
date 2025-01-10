@@ -7,10 +7,10 @@ import (
 	"net/http/httputil"
 
 	"github.com/nafigator/http/headers"
+	"github.com/nafigator/http/mime"
 )
 
 const (
-	defaultMIME     = "application/octet-stream"
 	defaultTemplate = "HTTP dump:\n%s\n\n%s\n"
 )
 
@@ -32,6 +32,7 @@ type HTTPDumper struct {
 	masker   masker
 	flusher  flusher
 	log      logger
+	filter   func(string) bool
 }
 
 // New creates http-dumper instance.
@@ -43,6 +44,7 @@ func New(
 		template: defaultTemplate,
 		next:     next,
 		flusher:  flusher,
+		filter:   needBody,
 	}
 }
 
@@ -67,9 +69,16 @@ func (h *HTTPDumper) WithErrLogger(log logger) *HTTPDumper {
 	return h
 }
 
+// WithFilter replaces MIME-based filter function to custom one.
+func (h *HTTPDumper) WithFilter(f func(string) bool) *HTTPDumper {
+	h.filter = f
+
+	return h
+}
+
 // RoundTrip http.RoundTripper implementation.
 func (h *HTTPDumper) RoundTrip(req *http.Request) (*http.Response, error) {
-	b, e := httputil.DumpRequestOut(req, needBody(req.Header.Get(headers.ContentType)))
+	b, e := httputil.DumpRequestOut(req, h.filter(req.Header.Get(headers.ContentType)))
 	if e != nil {
 		if h.log != nil {
 			h.log.Error("HTTP request dump error: ", e)
@@ -128,7 +137,7 @@ func (h *HTTPDumper) handleRequest(req *http.Request, reqDump string) (*http.Res
 }
 
 func needBody(ct string) bool {
-	if ct == defaultMIME || ct == "" {
+	if ct == mime.Bin || ct == "" {
 		return false // do not dump files
 	}
 

@@ -29,7 +29,6 @@ as a public API. Read more on [SemVer.org][semver src].
 
 <details>
   <summary>Built with</summary>
-  <ol>
 
   [![Go][Go badge]][Go URL]
 
@@ -39,7 +38,7 @@ as a public API. Read more on [SemVer.org][semver src].
 
   [![GitHub Actions][Github actions badge]][Github actions URL]
 
-  </ol>
+  [![Codecov][Codecov badge]][Codecov URL]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
@@ -55,11 +54,12 @@ as a public API. Read more on [SemVer.org][semver src].
 [Repo size badge]: https://img.shields.io/github/repo-size/nafigator/http?logo=github&color=teal
 [Go badge]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=fff&logoSize=auto
 [Go URL]: https://go.dev
-<!-- [GoLand badge]: https://img.shields.io/badge/GoLand-AF1DF5?style=for-the-badge&logo=goland&logoColor=000&logoSize=auto -->
 [GoLand badge]: https://img.shields.io/badge/GoLand-000?&style=for-the-badge&logo=goland&logoColor=FF318C&logoSize=auto
 [GoLand URL]: https://www.jetbrains.com/go/
 [Git badge]: https://img.shields.io/badge/Git-fff?style=for-the-badge&logo=git&logoColor=F05032
 [Git URL]: https://git-scm.com/
+[Codecov badge]: https://img.shields.io/badge/codecov-ff0077?style=for-the-badge&logo=codecov&logoColor=fff
+[Codecov URL]: https://codecov.io/
 [Github actions badge]: https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff&logoSize=auto&labelColor=githubactions
 [Github actions URL]: https://github.com/nafigator/http/actions
 [semver src]: http://semver.org

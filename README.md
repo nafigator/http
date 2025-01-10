@@ -1,3 +1,4 @@
+<a id="readme-top"></a>
 # http
 [![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] ![Repo size][Repo size badge]
 
@@ -26,12 +27,15 @@ Collection of Go HTTP packages
 Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
 as a public API. Read more on [SemVer.org][semver src].
 
-### Built with
+<details>
+  <summary>Built with</summary>
+
 * [![Go][Go badge]][Go URL]
 * [![GoLand][GoLand badge]][GoLand URL]
 * [![Git][Git badge]][Git URL]
 * [![GitHub Actions][Github actions badge]][Github actions URL]
-
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 [License img]: https://img.shields.io/github/license/nafigator/http?color=teal
 [License src]: https://www.tldrlegal.com/license/mit-license

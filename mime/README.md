@@ -25,11 +25,11 @@ fmt.Println(mime.Bin)    // application/octet-stream
 ```
 
 ## Intention
-Minimalistic constants for elimination in code mess like:
+Minimalistic constants for elimination in code mess like [this][bad code]:
 ```go
   ...
-  // w.Header().Set("Content-Type", mime.XLSX)
-  w.Header().Set("Content-Type", mimetype.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet)
+  w.Header().Set("Content-Type", mime.XLSX)                                                             // good
+  w.Header().Set("Content-Type", mimetype.ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet) // bad
   ...
 ```
 
@@ -41,3 +41,4 @@ Minimalistic constants for elimination in code mess like:
 [Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/mime
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
+[bad code]: https://github.com/ldez/mimetype/blame/4de9543b5c7d8c409c824cbe7cf491a610e7351b/application.go#L2643

@@ -29,11 +29,18 @@ as a public API. Read more on [SemVer.org][semver src].
 
 <details>
   <summary>Built with</summary>
+  <ol>
 
-* [![Go][Go badge]][Go URL]
-* [![GoLand][GoLand badge]][GoLand URL]
-* [![Git][Git badge]][Git URL]
-* [![GitHub Actions][Github actions badge]][Github actions URL]
+  [![Go][Go badge]][Go URL]
+
+  [![GoLand][GoLand badge]][GoLand URL]
+
+  [![Git][Git badge]][Git URL]
+
+  [![GitHub Actions][Github actions badge]][Github actions URL]
+
+  </ol>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
 

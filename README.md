@@ -27,18 +27,11 @@ Collection of Go HTTP packages
 Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
 as a public API. Read more on [SemVer.org][semver src].
 
-<details>
-  <summary>Built with</summary>
+### Built with
 
-  [![Go][Go badge]][Go URL]
+[![Go][Go badge]][Go URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GoLand][GoLand badge]][GoLand URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Git][Git badge]][Git URL]
 
-  [![GoLand][GoLand badge]][GoLand URL]
-
-  [![Git][Git badge]][Git URL]
-
-  [![GitHub Actions][Github actions badge]][Github actions URL]
-
-  [![Codecov][Codecov badge]][Codecov URL]
+[![Docker][Docker badge]][Docker URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Codecov][Codecov badge]][Codecov URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub Actions][Github actions badge]][Github actions URL]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
@@ -58,6 +51,8 @@ as a public API. Read more on [SemVer.org][semver src].
 [GoLand URL]: https://www.jetbrains.com/go/
 [Git badge]: https://img.shields.io/badge/Git-fff?style=for-the-badge&logo=git&logoColor=F05032
 [Git URL]: https://git-scm.com/
+[Docker badge]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=fff
+[Docker URL]: https://www.docker.com/
 [Codecov badge]: https://img.shields.io/badge/codecov-ff0077?style=for-the-badge&logo=codecov&logoColor=fff
 [Codecov URL]: https://codecov.io/
 [Github actions badge]: https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff&logoSize=auto&labelColor=githubactions

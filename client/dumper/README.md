@@ -9,6 +9,7 @@ Easy to use HTTP-client dumper.
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#features">Features</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
     <li>
@@ -22,13 +23,20 @@ Easy to use HTTP-client dumper.
             </ul>
             <li><a href="#combined-masking">Combined Masking</a></li>
             <li><a href="#control-unmasked-symbols">Control unmasked symbols</a></li>
+            <li><a href="#error-handling">Error handling</a></li>
             <li><a href="#custom-template">Custom template</a></li>
+            <li><a href="#custom-flusher">Custom flusher</a></li>
             <li><a href="#custom-masker">Custom masker</a></li>
         </ul>
     </li>
     <li><a href="#tests">Tests</a></li>
   </ol>
 </details>
+
+## Features
+* Easy of use
+* Sensitive data masking
+* Customizable
 
 ## Installation
 
@@ -305,6 +313,30 @@ method.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
 
+### Error handling
+By default, dumper ignores errors from `httputil.DumpRequestOut()` and `httputil.DumpResponse()`. You can change this
+by providing error logger with interface:
+```go
+type logger interface {
+  Error(args ...interface{})
+}
+```
+
+<details>
+  <summary>Example</summary>
+
+```go
+  ...
+  log := zapper.Must(conf.Must())
+
+  d := dumper.
+    New(http.DefaultTransport, debug.New(log)).
+    WithErrLogger(log)
+  ...
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
+
 ### Custom template
 You can redefine default dump output template `"HTTP dump:\n%s\n\n%s\n"`. First placeholder is for request, second
 for response.
@@ -351,6 +383,18 @@ X-Frame-Options: DENY
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
 
+### Custom flusher
+Flusher contains functionality that provides required message processing. It can be functionality to save
+messages to database or output into stdout or anything else. Package [storage/debug][debug src] is an example of 
+flusher that uses zap logger under hood to debug messages into stdout. You can implement your own flusher with
+interface:
+```go
+type flusher interface {
+  Flush(ctx context.Context, msg string)
+}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Custom masker
 You can implement your own masker with interface:
 ```go
@@ -376,3 +420,4 @@ go test -C tests ./...
 [Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/client/dumper
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
+[debug src]: https://github.com/nafigator/http/tree/main/storage/debug

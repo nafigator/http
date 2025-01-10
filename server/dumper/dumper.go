@@ -8,6 +8,7 @@ import (
 
 	"github.com/nafigator/http/headers"
 	"github.com/nafigator/http/mime"
+	"github.com/nafigator/http/response/wrapper"
 )
 
 const (
@@ -28,7 +29,6 @@ type logger interface {
 
 type HTTPDumper struct {
 	template string
-	next     http.RoundTripper
 	masker   masker
 	flusher  flusher
 	log      logger
@@ -37,12 +37,10 @@ type HTTPDumper struct {
 
 // New creates http-dumper instance.
 func New(
-	next http.RoundTripper,
 	flusher flusher,
 ) *HTTPDumper {
 	return &HTTPDumper{
 		template: defaultTemplate,
-		next:     next,
 		flusher:  flusher,
 		filter:   needBody,
 	}
@@ -76,44 +74,47 @@ func (h *HTTPDumper) WithFilter(f func(string) bool) *HTTPDumper {
 	return h
 }
 
-// RoundTrip http.RoundTripper implementation.
-func (h *HTTPDumper) RoundTrip(req *http.Request) (*http.Response, error) {
-	b, e := httputil.DumpRequestOut(req, h.filter(req.Header.Get(headers.ContentType)))
-	if e != nil {
-		if h.log != nil {
-			h.log.Error("HTTP request dump error: ", e)
+func (h *HTTPDumper) MiddleWare(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		b, e := httputil.DumpRequest(r, h.filter(r.Header.Get(headers.ContentType)))
+		if e != nil {
+			if h.log != nil {
+				h.log.Error("HTTP request dump error: ", e)
+			}
+
+			dump := ""
+
+			h.handleRequest(w, r, next, dump)
+
+			return
 		}
 
-		dump := ""
+		dump := string(b)
+		if h.masker != nil {
+			h.masker.Mask(r, &dump)
+		}
 
-		return h.handleRequest(req, dump)
-	}
-
-	dump := string(b)
-	if h.masker != nil {
-		h.masker.Mask(req, &dump)
-	}
-
-	return h.handleRequest(req, dump)
+		h.handleRequest(w, r, next, dump)
+	})
 }
 
-func (h *HTTPDumper) handleRequest(req *http.Request, reqDump string) (*http.Response, error) {
-	var e error
-	var res *http.Response
-	ctx := req.Context()
+func (h *HTTPDumper) handleRequest(w http.ResponseWriter, r *http.Request, next http.Handler, reqDump string) {
+	ctx := r.Context()
+	ww := wrapper.New(w, r)
 
-	// Send request
-	res, e = h.next.RoundTrip(req)
-	if e != nil {
-		msg := fmt.Sprintf(h.template, reqDump, e.Error())
-		h.flusher.Flush(ctx, msg)
+	// Process request
+	next.ServeHTTP(&ww, r)
 
-		return res, e
-	}
+	res := ww.Result()
+	res.ProtoMinor = r.ProtoMinor
+	res.ProtoMajor = r.ProtoMajor
+	defer func() {
+		if res.Body != nil {
+			_ = res.Body.Close()
+		}
+	}()
 
-	var b []byte
-
-	b, e = httputil.DumpResponse(res, h.filter(res.Header.Get(headers.ContentType)))
+	b, e := httputil.DumpResponse(res, h.filter(res.Header.Get(headers.ContentType)))
 	if e != nil {
 		if h.log != nil {
 			h.log.Error("HTTP response dump error: ", e)
@@ -122,18 +123,16 @@ func (h *HTTPDumper) handleRequest(req *http.Request, reqDump string) (*http.Res
 		msg := fmt.Sprintf(h.template, reqDump, "")
 		h.flusher.Flush(ctx, msg)
 
-		return res, nil
+		return
 	}
 
 	resDump := string(b)
 	if h.masker != nil {
-		h.masker.Mask(req, &resDump)
+		h.masker.Mask(r, &resDump)
 	}
 
 	msg := fmt.Sprintf(h.template, reqDump, resDump)
 	h.flusher.Flush(ctx, msg)
-
-	return res, e
 }
 
 func needBody(ct string) bool {

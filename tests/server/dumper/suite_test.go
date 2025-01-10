@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	patchDumpResponse patch = iota + 1
+	patchDumpRequest patch = iota + 1
+	patchDumpResponse
 )
 
 type patch uint8
@@ -26,9 +27,14 @@ func TestRun(t *testing.T) {
 }
 
 func applyPatch(p patch) *monkey.PatchGuard {
-	if p == patchDumpResponse {
+	switch p {
+	case patchDumpResponse:
 		return monkey.Patch(httputil.DumpResponse, func(_ *http.Response, _ bool) ([]byte, error) {
 			return nil, errors.New("dump response error")
+		})
+	case patchDumpRequest:
+		return monkey.Patch(httputil.DumpRequest, func(_ *http.Request, _ bool) ([]byte, error) {
+			return nil, errors.New("dump request error")
 		})
 	}
 

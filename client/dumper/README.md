@@ -420,17 +420,10 @@ func(ct string) bool {
 ```go
   ...
   // Wrap default http transport by dumper
-  d := dumper.New(
-    http.DefaultTransport,
-    debug.New(log), // Use debug output or implement your own
-  )
-  d.WithFilter(func(ct string) bool {
-    if ct == mime.PDF { // do not dump PDF file in body
-      return false
-    }
-
-    return true
-  })
+  d := dumper.New(http.DefaultTransport, debug.New(log)).
+    WithFilter(func(ct string) bool {
+      return ct != mime.PDF // do not dump PDF file in body
+    })
   ...
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

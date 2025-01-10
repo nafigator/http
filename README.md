@@ -1,39 +1,54 @@
 # http
-[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src] [![Conventional Commits][Conventional commits badge]][Conventional commits src]
+[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] ![Repo size][Repo size badge]
 
 Collection of Go HTTP packages
 
-## Packages
-### client/dumper
+### Packages
+#### client/dumper
 [Package](https://github.com/nafigator/http/blob/main/client/dumper/README.md) for dumping HTTP-client requests/responses.
 
-### masker/auth
+#### masker/auth
 [Package](https://github.com/nafigator/http/tree/main/masker/auth) for hiding sensitive data in Authorization header of HTTP-dumps.
 
-### masker/json
+#### masker/json
 [Package](https://github.com/nafigator/http/tree/main/masker/json) for hiding sensitive data in JSON values of HTTP bodies.
 
-### masker/query
+#### masker/query
 [Package](https://github.com/nafigator/http/tree/main/masker/query) for hiding sensitive data in URL-params of HTTP-dumps.
 
-### storage/debug
+#### storage/debug
 [Package](https://github.com/nafigator/http/tree/main/storage/debug) with implementation of output HTTP-dumps as logger DEBUG messages.
 
-### headers
+#### headers
 [Package](https://github.com/nafigator/http/blob/main/headers/README.md) with constants for HTTP headers.
 
-## Versioning
+### Versioning
 Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
 as a public API. Read more on [SemVer.org][semver src].
 
+### Built with
+* [![Go][Go badge]][Go URL]
+* [![GoLand][GoLand badge]][GoLand URL]
+* [![Git][Git badge]][Git URL]
+* [![GitHub Actions][Github actions badge]][Github actions URL]
+
+
 [License img]: https://img.shields.io/github/license/nafigator/http?color=teal
 [License src]: https://www.tldrlegal.com/license/mit-license
-[Github main status src]: https://github.com/nafigator/http/tree/main/client/dumper
+[Github main status src]: https://github.com/nafigator/http/tree/main
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
-[Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/client/dumper
-[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/client/dumper
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg
+[Repo size badge]: https://img.shields.io/github/repo-size/nafigator/http?logo=github&color=teal
+[Go badge]: https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=fff&logoSize=auto
+[Go URL]: https://go.dev
+<!-- [GoLand badge]: https://img.shields.io/badge/GoLand-AF1DF5?style=for-the-badge&logo=goland&logoColor=000&logoSize=auto -->
+[GoLand badge]: https://img.shields.io/badge/GoLand-000?&style=for-the-badge&logo=goland&logoColor=FF318C&logoSize=auto
+[GoLand URL]: https://www.jetbrains.com/go/
+[Git badge]: https://img.shields.io/badge/Git-fff?style=for-the-badge&logo=git&logoColor=F05032
+[Git URL]: https://git-scm.com/
+[Github actions badge]: https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff&logoSize=auto&labelColor=githubactions
+[Github actions URL]: https://github.com/nafigator/http/actions
 [semver src]: http://semver.org

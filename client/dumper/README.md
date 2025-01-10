@@ -1,5 +1,5 @@
 <a id="readme-top"></a>
-# HTTP-client dumper
+# Go HTTP-client dumper
 
 [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src]
 
@@ -35,9 +35,11 @@ Easy to use HTTP-client dumper.
 ```sh
 go install github.com/nafigator/http/client/dumper
 ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
+
+<details>
+  <summary>Example</summary>
 
 ```go
 package main
@@ -85,8 +87,16 @@ func main() {
   }
 }
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+</details>
+
 After `go run main.go` you'll get output with full HTTP request/response:
-```shell
+
+<details>
+  <summary>Output</summary>
+
+```
 2025-01-08 09:18:29.254	DEBUG	HTTP dump:
 GET /api/v3/checks/ HTTP/1.1
 Host: example.io
@@ -105,6 +115,9 @@ X-Frame-Options: DENY
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+</details>
+
+
 ## Advanced usage
 ### Masking
 Optionally you can mask sensitive data in HTTP dumps using masker. There is 3 masker types:
@@ -113,7 +126,10 @@ Optionally you can mask sensitive data in HTTP dumps using masker. There is 3 ma
 3. **scalar** - masks JSON scalars in HTTP body.
 
 #### auth
-Example:
+
+<details>
+  <summary>Example</summary>
+
 ```go
 import (
   "github.com/nafigator/http/client/dumper"
@@ -128,8 +144,14 @@ func main() {
     WithMasker(auth.New()) // Add auth masker
   ...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 This masker will mask dump as follows:
+
+<details>
+  <summary>Output</summary>
+
 ```shell
 2025-01-08 09:18:29.254	DEBUG	HTTP dump:
 GET /api/v3/checks/ HTTP/1.1
@@ -149,9 +171,13 @@ X-Frame-Options: DENY
 {"error": "invalid api key"}
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 #### query
-Example:
+
+<details>
+  <summary>Example</summary>
+
 ```go
 import (
   "github.com/nafigator/http/client/dumper"
@@ -166,9 +192,15 @@ func main() {
     WithMasker(query.New([]string{"user","secret"})) // Add query masker
   ...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 This masker will mask dump as follows:
-```shell
+
+<details>
+  <summary>Output</summary>
+
+```
 2025-01-08 09:18:29.254	DEBUG	HTTP dump:
 GET /api/v3/checks?user=**onymous&secret=*****6789ABC HTTP/1.1
 Host: example.io
@@ -186,9 +218,13 @@ X-Frame-Options: DENY
 {"error": "invalid secret"}
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 #### json
-Example:
+
+<details>
+  <summary>Example</summary>
+
 ```go
 import (
   "github.com/nafigator/http/client/dumper"
@@ -203,9 +239,15 @@ func main() {
     WithMasker(json.New([]string{"user","secret"})) // Add JSON masker
   ...
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 This masker will mask dump as follows:
-```shell
+
+<details>
+  <summary>Output</summary>
+
+```
 2025-01-08 09:18:29.254	DEBUG	HTTP dump:
 POST /api/v3/checks/ HTTP/1.1
 Host: example.io
@@ -225,9 +267,14 @@ X-Frame-Options: DENY
 {"error":"invalid secret"}
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 ### Combined masking
 Optionally you can combine maskers as follows:
+
+<details>
+  <summary>Example</summary>
+
 ```go
   ...
   m := auth.New().
@@ -238,10 +285,15 @@ Optionally you can combine maskers as follows:
   ...
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 ### Control unmasked symbols
 By default, all maskers leave 7 unmasked symbols at end for debug purpose. You can change this using `WithUnmasked()`
-method. Example:
+method.
+
+<details>
+  <summary>Example</summary>
+
 ```go
   ...
   m := auth.New().WithUnmasked(0)
@@ -251,10 +303,15 @@ method. Example:
   ...
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 ### Custom template
 You can redefine default dump output template `"HTTP dump:\n%s\n\n%s\n"`. First placeholder is for request, second
-for response. Example:
+for response.
+
+<details>
+  <summary>Example</summary>
+
 ```go
   ...
   // Wrap default http transport by dumper
@@ -265,8 +322,15 @@ for response. Example:
   d.WithTemplate("Dump:\n%s\n✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭\n%s\n")
   ...
 ```
-This example produces output:
-```shell
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
+
+This example produces:
+
+<details>
+  <summary>Output</summary>
+
+```
 2025-01-09 16:03:20.461	DEBUG	Dump:
 GET /api/v3/checks/ HTTP/1.1
 Host: example.io
@@ -285,6 +349,7 @@ X-Frame-Options: DENY
 {"error": "missing api key"}
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+</details>
 
 ### Custom masker
 You can implement your own masker with interface:
@@ -293,7 +358,7 @@ type masker interface {
   Mask(*http.Request, *string)
 }
 ```
-Where second parameter is pointer to final dump.
+Where the second parameter is a pointer to final dump.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Tests

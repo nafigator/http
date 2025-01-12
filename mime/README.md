@@ -38,7 +38,7 @@ Minimalistic constants for elimination in code mess like [this][bad code]:
 [Github main status src]: https://github.com/nafigator/http/tree/main/mime
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
 [Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/mime
-[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/mime
+[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/mime?v1
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
 [bad code]: https://github.com/ldez/mimetype/blame/4de9543b5c7d8c409c824cbe7cf491a610e7351b/application.go#L2643

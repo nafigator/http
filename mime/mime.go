@@ -15,6 +15,7 @@ const (
 	PNG   = "image/png"
 	Rar   = "application/vnd.rar"
 	RTF   = "application/rtf"
+	SVG   = "image/svg+xml"
 	Tar   = "application/x-tar"
 	Text  = "text/plain"
 	X7zip = "application/x-7z-compressed"

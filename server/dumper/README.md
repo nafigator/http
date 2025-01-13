@@ -1,9 +1,9 @@
 <a id="readme-top"></a>
-# Go HTTP-client dumper
+# Go HTTP dumper
 
 [![GitHub release][Release img]][Release src] [![Github main status][Github main status badge]][Github main status src] [![Go Report Card][Go Report Card badge]][Go Report Card src] [![Coverage report][Codecov report badge]][Codecov report src]
 
-Easy to use HTTP-client dumper.
+Easy to use serverside HTTP dumper.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -50,7 +50,7 @@ package main
 import (
   "net/http"
 
-  "github.com/nafigator/http/client/dumper"
+  "github.com/nafigator/http/server/dumper"
   "github.com/nafigator/http/storage/debug"
   "github.com/nafigator/zapper"
   "github.com/nafigator/zapper/conf"
@@ -76,18 +76,22 @@ encoderConfig:
 
 func main() {
   log := zapper.Must(conf.MustYML(zapConfig))
+  d := dumper.New(debug.new(log))
+  mux := http.NewServeMux()
 
-  // Wrap default http transport by dumper
-  d := dumper.New(
-    http.DefaultTransport,
-    debug.New(log), // Use debug output or implement your own
-  )
+  mux.Handle("/", Home)
 
-  c := http.Client{Transport: d}
-  _, err := c.Get("https://example.io/api/v3/checks/")
-  if err != nil {
-    log.Errorln(err)
+  srv := http.Server{
+    Handler: d.MiddleWare(mux),
   }
+
+  if err := httpServer.ListenAndServe(); err != nil {
+    log.Fatal(err)
+  }
+}
+
+func Home(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprint(w, "Homepage")
 }
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -101,20 +105,16 @@ After `go run main.go` you'll get output with full HTTP request/response:
 
 ```
 2025-01-08 09:18:29.254	DEBUG	HTTP dump:
-GET /api/v3/checks/ HTTP/1.1
-Host: example.io
-User-Agent: Go-http-client/1.1
+GET / HTTP/1.1
+Host: localhost
 Accept-Encoding: gzip
 
 
 
-HTTP/2.0 401 Unauthorized
-Content-Length: 28
-Content-Type: application/json
+HTTP/1.1 OK 200
 Date: Wed, 08 Jan 2025 06:18:29 GMT
-X-Frame-Options: DENY
 
-{"error": "missing api key"}
+Homepage
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,17 +138,14 @@ Optionally you can mask sensitive data in HTTP dumps using masker. There is 3 ma
 
 ```go
 import (
-  "net/http"
-
-  "github.com/nafigator/http/client/dumper"
+  "github.com/nafigator/http/server/dumper"
   "github.com/nafigator/http/storage/debug"
   "github.com/nafigator/http/masker/auth"
 )
 
 func main() {
   ...
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithMasker(auth.New()) // Add auth masker
   ...
 ```
@@ -188,17 +185,14 @@ X-Frame-Options: DENY
 
 ```go
 import (
-  "net/http"
-
-  "github.com/nafigator/http/client/dumper"
+  "github.com/nafigator/http/server/dumper"
   "github.com/nafigator/http/storage/debug"
   "github.com/nafigator/http/masker/query"
 )
 
 func main() {
   ...
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithMasker(query.New([]string{"user","secret"})) // Add query masker
   ...
 ```
@@ -237,8 +231,6 @@ X-Frame-Options: DENY
 
 ```go
 import (
-  "net/http"
-
   "github.com/nafigator/http/client/dumper"
   "github.com/nafigator/http/storage/debug"
   "github.com/nafigator/http/masker/json"
@@ -246,8 +238,7 @@ import (
 
 func main() {
   ...
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithMasker(json.New([]string{"user","secret"})) // Add JSON masker
   ...
 ```
@@ -291,8 +282,7 @@ Optionally you can combine maskers as follows:
   ...
   m := auth.New().
     WithNext(json.New([]string{"secret"}))
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithMasker(m) // Add auth and JSON masker
   ...
 ```
@@ -309,8 +299,7 @@ method.
 ```go
   ...
   m := auth.New().WithUnmasked(0)
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithMasker(m) // Add auth with entire value masker
   ...
 ```
@@ -334,7 +323,7 @@ type logger interface {
   log := zapper.Must(conf.Must())
 
   d := dumper.
-    New(http.DefaultTransport, debug.New(log)).
+    New(debug.New(log)).
     WithErrLogger(log)
   ...
 ```
@@ -350,12 +339,8 @@ for response.
 
 ```go
   ...
-  // Wrap default http transport by dumper
-  d := dumper.New(
-    http.DefaultTransport,
-    debug.New(log), // Use debug output or implement your own
-  )
-  d.WithTemplate("Dump:\n%s\n✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭\n%s\n")
+  d := dumper.New(debug.New(log)).
+    WithTemplate("Dump:\n%s\n✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭ ✭\n%s\n")
   ...
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -418,8 +403,7 @@ func(ct string) bool {
 
 ```go
   ...
-  // Wrap default http transport by dumper
-  d := dumper.New(http.DefaultTransport, debug.New(log)).
+  d := dumper.New(debug.New(log)).
     WithFilter(func(ct string) bool {
       return ct != mime.PDF // do not dump PDF file in body
     })
@@ -445,12 +429,12 @@ go test -C tests ./...
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal&filter=client/dumper*
-[Release src]: https://github.com/nafigator/http/tree/main/client/dumper
-[Github main status src]: https://github.com/nafigator/http/tree/main/client/dumper
+[Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal&filter=server/dumper*
+[Release src]: https://github.com/nafigator/http/tree/main/server/dumper
+[Github main status src]: https://github.com/nafigator/http/tree/main/server/dumper
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
-[Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/client/dumper
-[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/client/dumper
+[Go Report Card src]: https://goreportcard.com/report/github.com/nafigator/http/server/dumper
+[Go Report Card badge]: https://goreportcard.com/badge/github.com/nafigator/http/server/dumper
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
 [debug src]: https://github.com/nafigator/http/tree/main/storage/debug

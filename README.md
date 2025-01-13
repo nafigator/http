@@ -17,6 +17,12 @@ Collection of Go HTTP packages
 #### masker/query
 [Package](https://github.com/nafigator/http/tree/main/masker/query) for hiding sensitive data in URL-params of HTTP-dumps.
 
+#### response/wrapper
+[Package](https://github.com/nafigator/http/blob/main/response/wrapper/README.md) for dumping HTTP responses.
+
+#### server/dumper
+[Package](https://github.com/nafigator/http/blob/main/server/dumper/README.md) for dumping incoming HTTP requests/responses.
+
 #### storage/debug
 [Package](https://github.com/nafigator/http/tree/main/storage/debug) with implementation of output HTTP-dumps as logger DEBUG messages.
 
@@ -32,9 +38,9 @@ as a public API. Read more on [SemVer.org][semver src].
 
 ### Built with
 
-[![Go][Go badge]][Go URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GoLand][GoLand badge]][GoLand URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Git][Git badge]][Git URL]
+[![Go][Go badge]][Go URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GoLand][GoLand badge]][GoLand URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Git][Git badge]][Git URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Debian][Debian badge]][Debian URL]&nbsp;&nbsp;&nbsp;&nbsp;[![MATE][MATE badge]][MATE URL]
 
-[![Docker][Docker badge]][Docker URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Codecov][Codecov badge]][Codecov URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub Actions][Github actions badge]][Github actions URL]
+[![Docker][Docker badge]][Docker URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Codecov][Codecov badge]][Codecov URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub][Github badge]][Github URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub Actions][Github actions badge]][Github actions URL]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 </details>
@@ -54,10 +60,16 @@ as a public API. Read more on [SemVer.org][semver src].
 [GoLand URL]: https://www.jetbrains.com/go/
 [Git badge]: https://img.shields.io/badge/Git-fff?style=for-the-badge&logo=git&logoColor=F05032
 [Git URL]: https://git-scm.com/
+[Debian badge]: https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=fff
+[Debian URL]: https://www.debian.org/
+[MATE badge]: https://img.shields.io/badge/MATE-84A454.svg?style=for-the-badge&logo=Ubuntu-MATE&logoColor=fff
+[MATE URL]: https://mate-desktop.org/
 [Docker badge]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=fff
 [Docker URL]: https://www.docker.com/
 [Codecov badge]: https://img.shields.io/badge/codecov-ff0077?style=for-the-badge&logo=codecov&logoColor=fff
 [Codecov URL]: https://codecov.io/
+[Github badge]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=fff
+[Github URL]: https://github.com
 [Github actions badge]: https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff&logoSize=auto&labelColor=githubactions
 [Github actions URL]: https://github.com/nafigator/http/actions
 [semver src]: http://semver.org

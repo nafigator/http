@@ -8,6 +8,9 @@ Collection of Go HTTP packages
 #### client/dumper
 [Package](https://github.com/nafigator/http/blob/main/client/dumper/README.md) for dumping HTTP-client requests/responses.
 
+#### client/retry
+[Package](https://github.com/nafigator/http/blob/main/client/retry/README.md) for HTTP-client retries on errors.
+
 #### masker/auth
 [Package](https://github.com/nafigator/http/tree/main/masker/auth) for hiding sensitive data in Authorization header of HTTP-dumps.
 

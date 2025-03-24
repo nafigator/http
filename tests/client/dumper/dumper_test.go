@@ -40,7 +40,7 @@ type masker interface {
 	Mask(*http.Request, *string)
 }
 
-type roundRobinCase struct {
+type roundTripCase struct {
 	name             string
 	request          *http.Request
 	responseRecorder *httptest.ResponseRecorder
@@ -55,7 +55,7 @@ type roundRobinCase struct {
 }
 
 func (s *suite) TestRoundTrip() {
-	for _, c := range roundRobinProvider() {
+	for _, c := range roundTripProvider() {
 		s.Run(c.name, func() {
 			ctrl := gomock.NewController(s.T())
 			next := mocks.NewMockRoundTripper(ctrl)
@@ -109,7 +109,7 @@ func (s *suite) TestRoundTrip() {
 	}
 }
 
-func roundRobinProvider() []roundRobinCase {
+func roundTripProvider() []roundTripCase {
 	reqBody := []byte(`{"name":"Boris", "age": 20}`)
 	request, _ := http.NewRequest(http.MethodPost, URL, bytes.NewBuffer(reqBody))
 	request.Header.Set(headers.ContentType, mime.JSON)
@@ -125,7 +125,7 @@ func roundRobinProvider() []roundRobinCase {
 	badResponse.Body = bytes.NewBufferString(`{"errors":[{"code":1,"message":"internal error"}]}`)
 	_ = badResponse.Result().Body.Close()
 
-	return []roundRobinCase{
+	return []roundTripCase{
 		{
 			name:             "200 response",
 			request:          request,

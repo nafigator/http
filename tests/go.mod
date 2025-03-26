@@ -5,7 +5,7 @@ go 1.23
 require (
 	bou.ke/monkey v1.0.2
 	github.com/nafigator/http/client/dumper v0.3.2
-	github.com/nafigator/http/client/retry v0.0.0-20250326101117-bd39b254d128
+	github.com/nafigator/http/client/retry v0.1.0
 	github.com/nafigator/http/headers v1.0.7
 	github.com/nafigator/http/masker/auth v0.2.0
 	github.com/nafigator/http/masker/json v0.1.0

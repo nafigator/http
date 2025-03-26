@@ -67,8 +67,8 @@ jobs:
       - name: Test all packages
         run: go test -C tests -v ./... -race -coverprofile=./tests.out -covermode=atomic
 
-      - name: Check headers package coverage
-        uses: vladopajic/go-test-coverage@v2
+      - name: Check coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
         with:
           # Configure action using config file (option 1)
           #config: ./tests/.testcoverage.yml

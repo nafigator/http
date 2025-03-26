@@ -38,7 +38,7 @@ func New(
 		limit:   defaultLimit,
 		current: 1,
 		pause:   defaultPause,
-		validate: func(res *http.Response, err error) bool {
+		validate: func(res *http.Response, _ error) bool {
 			if res != nil && (res.StatusCode == http.StatusBadGateway ||
 				res.StatusCode == http.StatusServiceUnavailable ||
 				res.StatusCode == http.StatusGatewayTimeout) {

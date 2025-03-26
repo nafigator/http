@@ -4,8 +4,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/nafigator/http/client/dumper v0.3.2 h1:oLhKc10XgJUcrR5ME1qZBGXVkr52ZBlLzHHgf+EgyaU=
 github.com/nafigator/http/client/dumper v0.3.2/go.mod h1:9OjZvm1Fa3X4GhfCHHSNwkl5iF2Vvd3Ldg7cg6xipis=
-github.com/nafigator/http/client/retry v0.0.0-20250326090303-03edf6bf2e11 h1:OkustuAshTUJkyr2KqWA1QCJp8lx3Ne6LrsKC20tWPc=
-github.com/nafigator/http/client/retry v0.0.0-20250326090303-03edf6bf2e11/go.mod h1:8okD+irgr8DbEq5QHwv3zJBJgxLaNgYIq+yY5nzW/x8=
+github.com/nafigator/http/client/retry v0.0.0-20250326101117-bd39b254d128 h1:pwuBt6JekAlP9l6+bk+p5+x3eqqcmAv78ADYSbmDb94=
+github.com/nafigator/http/client/retry v0.0.0-20250326101117-bd39b254d128/go.mod h1:8okD+irgr8DbEq5QHwv3zJBJgxLaNgYIq+yY5nzW/x8=
 github.com/nafigator/http/headers v1.0.7 h1:kccpAbSt5jC4JiHX+3HUlkavajCdq5l+nXjLMCGmu1M=
 github.com/nafigator/http/headers v1.0.7/go.mod h1:1HFNFasu6FaZ8jYr1eYzkRZDSoBeDxwPkRCeLc6a/Zs=
 github.com/nafigator/http/masker/auth v0.2.0 h1:HKzBiM73XbA+7lv/yGOhE0KIdLChB5oWZnT7i4B1N1U=

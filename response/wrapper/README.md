@@ -4,6 +4,9 @@
 
 Wrapper for HTTP ResponseWriter.
 
+Intended for processing HTTP response writer copy.
+For example, when you need to dump response.
+
 ## Usage
 
 ```go

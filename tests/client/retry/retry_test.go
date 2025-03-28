@@ -31,8 +31,6 @@ const (
 type roundTripMultipleCase struct {
 	name              string
 	request           *http.Request
-	expectedMsgLevel  zapcore.Level
-	expectedMsgCount  int
 	expectedFirstRes  *http.Response
 	expectedFirstErr  error
 	expectedSecondRes *http.Response
@@ -162,7 +160,7 @@ func roundTripMultipleProvider() []roundTripMultipleCase {
 
 	response200 := httptest.NewRecorder()
 	response200.Code = http.StatusOK
-	response200.Body = bytes.NewBuffer([]byte(`{"status":"OK"}`))
+	response200.Body = bytes.NewBufferString(`{"status":"OK"}`)
 
 	response500 := httptest.NewRecorder()
 	response500.Code = http.StatusInternalServerError
@@ -199,13 +197,12 @@ func roundTripMultipleProvider() []roundTripMultipleCase {
 }
 
 func roundTripOnceProvider() []roundTripOnceCase {
-	reqBody := []byte(`{"name":"Boris", "age": 20}`)
-	request, _ := http.NewRequest(http.MethodPost, URL, bytes.NewBuffer(reqBody))
+	request, _ := http.NewRequest(http.MethodPost, URL, bytes.NewBufferString(`{"name":"Boris", "age": 20}`))
 	request.Header.Set(headers.ContentType, mime.JSON)
 
 	response200 := httptest.NewRecorder()
 	response200.Code = http.StatusOK
-	response200.Body = bytes.NewBuffer([]byte(`{"status":"OK"}`))
+	response200.Body = bytes.NewBufferString(`{"status":"OK"}`)
 
 	response500 := httptest.NewRecorder()
 	response500.Code = http.StatusInternalServerError
@@ -271,7 +268,7 @@ func roundTripOnceProvider() []roundTripOnceCase {
 			expectedRes:   response200.Result(),
 			expected:      []observer.LoggedEntry{},
 			expectedCount: 1,
-			validator: func(r *http.Response, err error) bool {
+			validator: func(_ *http.Response, _ error) bool {
 				return true
 			},
 		},

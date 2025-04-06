@@ -4,12 +4,12 @@ go 1.23
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/nafigator/http/client/dumper v1.0.1
+	github.com/nafigator/http/client/dumper v1.0.2
 	github.com/nafigator/http/client/retry v0.1.4
 	github.com/nafigator/http/headers v1.0.9
 	github.com/nafigator/http/masker/auth v1.0.1
-	github.com/nafigator/http/masker/json v1.0.1
-	github.com/nafigator/http/masker/query v1.0.1
+	github.com/nafigator/http/masker/json v1.0.2
+	github.com/nafigator/http/masker/query v1.0.2
 	github.com/nafigator/http/mime v1.1.0
 	github.com/nafigator/http/server/dumper v1.0.1
 	github.com/nafigator/http/storage/debug v1.0.0

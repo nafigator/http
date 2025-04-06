@@ -19,14 +19,14 @@ type logger interface {
 
 type HTTPRetry struct {
 	ctx      context.Context
+	next     http.RoundTripper
+	log      logger
+	validate func(res *http.Response, err error) bool
 	limit    int
 	current  uint
 	done     uint
 	pause    time.Duration
 	timeout  time.Duration
-	next     http.RoundTripper
-	log      logger
-	validate func(res *http.Response, err error) bool
 }
 
 // New creates http retry repeater instance.

@@ -15,9 +15,9 @@ type next interface {
 }
 
 type Masker struct {
-	unmasked int
-	params   []string
 	next     next
+	params   []string
+	unmasked int
 }
 
 // New creates masker instance.

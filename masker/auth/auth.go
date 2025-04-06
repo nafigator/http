@@ -18,8 +18,8 @@ type next interface {
 }
 
 type Masker struct {
-	unmasked int
 	next     next
+	unmasked int
 }
 
 // New creates masker instance.

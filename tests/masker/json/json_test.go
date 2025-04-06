@@ -19,10 +19,10 @@ type next interface {
 type testCase struct {
 	request  http.Request
 	next     next
-	dump     string
-	params   []string
 	unmasked *int
+	dump     string
 	expected string
+	params   []string
 }
 
 func TestMask(t *testing.T) {

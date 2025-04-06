@@ -29,31 +29,31 @@ const (
 )
 
 type roundTripMultipleCase struct {
-	name              string
+	expectedFirstErr  error
+	expectedSecondErr error
+	expectedThirdErr  error
+	expectedFourthErr error
 	request           *http.Request
 	expectedFirstRes  *http.Response
-	expectedFirstErr  error
 	expectedSecondRes *http.Response
-	expectedSecondErr error
 	expectedThirdRes  *http.Response
-	expectedThirdErr  error
 	expectedFourthRes *http.Response
-	expectedFourthErr error
+	name              string
 	expectedCount     uint
 }
 
 type roundTripOnceCase struct {
-	name             string
-	request          *http.Request
-	expected         []observer.LoggedEntry
-	expectedMsgLevel zapcore.Level
-	expectedMsgCount int
-	expectedRes      *http.Response
 	expectedErr      error
-	expectedCount    uint
 	ctx              context.Context
-	timeout          time.Duration
+	request          *http.Request
+	expectedRes      *http.Response
 	validator        func(r *http.Response, err error) bool
+	name             string
+	expected         []observer.LoggedEntry
+	expectedMsgCount int
+	expectedCount    uint
+	timeout          time.Duration
+	expectedMsgLevel zapcore.Level
 }
 
 func (s *suite) TestRoundTripMultiple() {

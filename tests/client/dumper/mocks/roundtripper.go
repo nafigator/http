@@ -18,9 +18,9 @@ import (
 
 // MockRoundTripper is a mock of RoundTripper interface.
 type MockRoundTripper struct {
+	isgomock struct{}
 	ctrl     *gomock.Controller
 	recorder *MockRoundTripperMockRecorder
-	isgomock struct{}
 }
 
 // MockRoundTripperMockRecorder is the mock recorder for MockRoundTripper.

@@ -84,7 +84,7 @@ const (
 	XHTTPMethodOverride    = "X-HTTP-Method-Override"
 	XForwardedFor          = "X-Forwarded-For"
 	XRealIP                = "X-Real-IP"
-	XCSRFToken             = "X-CSRF-Token"
+	XCSRFToken             = "X-CSRF-Token" //nolint: gosec // False positive
 	XRatelimitLimit        = "X-Ratelimit-Limit"
 	XRatelimitRemaining    = "X-Ratelimit-Remaining"
 	XRatelimitReset        = "X-Ratelimit-Reset"

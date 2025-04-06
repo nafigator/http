@@ -41,17 +41,17 @@ type masker interface {
 }
 
 type roundTripCase struct {
-	name             string
+	masker           masker
+	expectedError    error
 	request          *http.Request
 	responseRecorder *httptest.ResponseRecorder
-	usePatch         patch
-	template         string
-	masker           masker
 	filter           func(string) bool
-	expectedError    error
+	name             string
+	template         string
 	expected         []observer.LoggedEntry
-	expectedMsgLevel zapcore.Level
 	expectedMsgCount int
+	usePatch         patch
+	expectedMsgLevel zapcore.Level
 }
 
 func (s *suite) TestRoundTrip() {

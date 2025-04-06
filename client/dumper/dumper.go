@@ -27,12 +27,12 @@ type logger interface {
 }
 
 type HTTPDumper struct {
-	template string
 	next     http.RoundTripper
 	masker   masker
 	flusher  flusher
 	log      logger
 	filter   func(string) bool
+	template string
 }
 
 // New creates http-dumper instance.

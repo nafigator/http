@@ -1,3 +1,4 @@
+// Package retry provides retry functionality for http.Client.
 package retry
 
 import (

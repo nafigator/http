@@ -1,3 +1,4 @@
+// Package dumper provides client-side HTTP traffic dumping functionality.
 package dumper
 
 import (

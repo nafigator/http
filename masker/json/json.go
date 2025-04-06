@@ -1,3 +1,4 @@
+// Package json provides masking functionality for HTTP dumps.
 package json
 
 import (

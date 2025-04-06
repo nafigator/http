@@ -1,3 +1,4 @@
+// Package headers provides list of HTTP headers constants.
 package headers
 
 import "net/textproto"

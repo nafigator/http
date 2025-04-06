@@ -1,3 +1,4 @@
+// Package wrapper used for copy http.ResponseWriter access.
 package wrapper
 
 import (

@@ -1,3 +1,4 @@
+// Package auth provides masking functionality for HTTP dumps.
 package auth
 
 import (

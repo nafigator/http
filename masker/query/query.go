@@ -1,3 +1,4 @@
+// Package query provides masking functionality for HTTP dumps.
 package query
 
 import (

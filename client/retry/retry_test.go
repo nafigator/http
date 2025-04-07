@@ -1,4 +1,4 @@
-package retry_test
+package retry
 
 import (
 	"bytes"
@@ -8,10 +8,8 @@ import (
 	"net/http/httptest"
 	"time"
 
-	"github.com/nafigator/http/client/retry"
 	"github.com/nafigator/http/headers"
 	"github.com/nafigator/http/mime"
-	"github.com/nafigator/http/tests/client/retry/mocks"
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -60,9 +58,9 @@ func (s *suite) TestRoundTripMultiple() {
 	for _, c := range roundTripMultipleProvider() {
 		s.Run(c.name, func() {
 			ctrl := gomock.NewController(s.T())
-			next := mocks.NewMockRoundTripper(ctrl)
+			next := NewMockRoundTripper(ctrl)
 
-			r := retry.New(next).
+			r := New(next).
 				WithPause(0).
 				WithLimit(count)
 
@@ -105,11 +103,11 @@ func (s *suite) TestRoundTripOnce() {
 	for _, c := range roundTripOnceProvider() {
 		s.Run(c.name, func() {
 			ctrl := gomock.NewController(s.T())
-			next := mocks.NewMockRoundTripper(ctrl)
+			next := NewMockRoundTripper(ctrl)
 
 			ob, logs := observer.New(c.expectedMsgLevel)
 			logger := zap.New(ob).Sugar()
-			r := retry.New(next).
+			r := New(next).
 				WithPause(0).
 				WithLimit(count).
 				WithErrLogger(logger)

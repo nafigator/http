@@ -1,18 +1,13 @@
-package auth_test
+package auth
 
 import (
 	"net/http"
 	"net/url"
 	"testing"
 
-	"github.com/nafigator/http/masker/auth"
 	"github.com/nafigator/http/masker/query"
 	"github.com/stretchr/testify/assert"
 )
-
-type next interface {
-	Mask(*http.Request, *string)
-}
 
 type testCase struct {
 	request  http.Request
@@ -25,7 +20,7 @@ type testCase struct {
 func TestMask(t *testing.T) {
 	for name, c := range dataProvider() {
 		t.Run(name, func(t *testing.T) {
-			a := auth.New().WithNext(c.next)
+			a := New().WithNext(c.next)
 
 			if c.unmasked != nil {
 				a.WithUnmasked(*c.unmasked)

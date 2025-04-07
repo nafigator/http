@@ -1,10 +1,9 @@
-package storage_test
+package debug
 
 import (
 	"context"
 	"testing"
 
-	"github.com/nafigator/http/storage/debug"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -22,7 +21,7 @@ func TestDebugFlush(t *testing.T) {
 	ob, logs := observer.New(zap.DebugLevel)
 	logger := zap.New(ob).Sugar()
 
-	d := debug.New(logger)
+	d := New(logger)
 	d.Flush(context.Background(), msg)
 
 	a.Len(logs.All(), 1, unexpectedMsgCount)

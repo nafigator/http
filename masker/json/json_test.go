@@ -1,4 +1,4 @@
-package json_test
+package json
 
 import (
 	"io"
@@ -8,13 +8,8 @@ import (
 	"testing"
 
 	"github.com/nafigator/http/masker/auth"
-	"github.com/nafigator/http/masker/json"
 	"github.com/stretchr/testify/assert"
 )
-
-type next interface {
-	Mask(*http.Request, *string)
-}
 
 type testCase struct {
 	request  http.Request
@@ -28,7 +23,7 @@ type testCase struct {
 func TestMask(t *testing.T) {
 	for name, c := range dataProvider() {
 		t.Run(name, func(t *testing.T) {
-			s := json.New(c.params).WithNext(c.next)
+			s := New(c.params).WithNext(c.next)
 
 			if c.unmasked != nil {
 				s.WithUnmasked(*c.unmasked)

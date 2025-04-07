@@ -1,4 +1,4 @@
-package query_test
+package query
 
 import (
 	"net/http"
@@ -8,12 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/nafigator/http/masker/auth"
-	"github.com/nafigator/http/masker/query"
 )
-
-type next interface {
-	Mask(*http.Request, *string)
-}
 
 type testCase struct {
 	request  http.Request
@@ -27,7 +22,7 @@ type testCase struct {
 func TestMask(t *testing.T) {
 	for name, c := range dataProvider() {
 		t.Run(name, func(t *testing.T) {
-			q := query.New(c.params).WithNext(c.next)
+			q := New(c.params).WithNext(c.next)
 
 			if c.unmasked != nil {
 				q.WithUnmasked(*c.unmasked)

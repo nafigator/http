@@ -1,4 +1,4 @@
-package dumper_test
+package dumper
 
 import (
 	"errors"

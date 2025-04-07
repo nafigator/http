@@ -1,4 +1,4 @@
-package dumper_test
+package dumper
 
 import (
 	"bytes"
@@ -10,9 +10,7 @@ import (
 	"github.com/nafigator/http/headers"
 	"github.com/nafigator/http/masker/query"
 	"github.com/nafigator/http/mime"
-	"github.com/nafigator/http/server/dumper"
 	"github.com/nafigator/http/storage/debug"
-	"github.com/nafigator/http/tests/server/dumper/mocks"
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -20,13 +18,13 @@ import (
 )
 
 const (
-	msgOK             = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n\n"                                         //nolint:lll
-	msgOKWithFilter   = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n\r\n\n\nHTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n\n"                                                                          //nolint:lll
-	msgOKWithTemplate = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n==============\n\nHTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n\n"                       //nolint:lll
-	internalError     = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\nConnection: close\r\n\r\n\n" //nolint:lll
-	responseDumpError = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n\n"                                                                                     //nolint:lll
-	requestDumpError  = "HTTP dump:\n\n\nHTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n\n"
-	requestDumpErr    = "HTTP request dump error: dump request error"
+	msgOK             = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"                   //nolint:lll
+	msgOKWithFilter   = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"                                                    //nolint:lll
+	msgOKWithTemplate = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n==============\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n" //nolint:lll
+	internalError     = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\ninternal error\n"                                                 //nolint:lll
+	responseDumpError = "HTTP dump:\nPOST / HTTP/1.1\r\nHost: localhost\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 27\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"name\":\"Boris\", \"age\": 20}\n\n\n"                                                               //nolint:lll
+	requestDumpError  = "HTTP dump:\n\n\nHTTP/1.1 200 OK\r\nConnection: close\r\n\r\n\n"
+	requestDumpErr    = "HTTP request dump error: unsupported protocol scheme \"\""
 	responseDumpErr   = "HTTP response dump error: dump response error"
 
 	unexpectedMsgCount = "Unexpected messages count"
@@ -36,15 +34,11 @@ const (
 	URL                = "https://localhost"
 )
 
-type masker interface {
-	Mask(*http.Request, *string)
-}
-
-type handlerCase struct {
-	responseRecorder http.ResponseWriter
+type roundTripCase struct {
 	masker           masker
 	expectedError    error
 	request          *http.Request
+	responseRecorder *httptest.ResponseRecorder
 	filter           func(string) bool
 	name             string
 	template         string
@@ -55,14 +49,17 @@ type handlerCase struct {
 }
 
 func (s *suite) TestRoundTrip() {
-	for _, c := range handlerProvider() {
+	for _, c := range roundTripProvider() {
 		s.Run(c.name, func() {
 			ctrl := gomock.NewController(s.T())
+			next := NewMockRoundTripper(ctrl)
+
+			expectedResponse := c.responseRecorder.Result()
 
 			ob, logs := observer.New(c.expectedMsgLevel)
 			logger := zap.New(ob).Sugar()
 			flusher := debug.New(logger)
-			d := dumper.New(flusher).WithErrLogger(logger)
+			d := New(next, flusher).WithErrLogger(logger)
 
 			if c.template != "" {
 				d.WithTemplate(c.template)
@@ -76,6 +73,11 @@ func (s *suite) TestRoundTrip() {
 				d.WithFilter(c.filter)
 			}
 
+			next.EXPECT().
+				RoundTrip(c.request).
+				Return(expectedResponse, c.expectedError).
+				Times(1)
+
 			if c.usePatch > 0 {
 				applyPatch(c.usePatch)
 				defer func() {
@@ -83,46 +85,46 @@ func (s *suite) TestRoundTrip() {
 				}()
 			}
 
-			next := mocks.NewMockHandler(ctrl)
-			if c.expectedError == nil {
-				next.
-					EXPECT().
-					ServeHTTP(gomock.Any(), c.request).
-					Times(1)
-			} else {
-				next.
-					EXPECT().
-					ServeHTTP(gomock.Any(), c.request).
-					Do(func(next http.ResponseWriter, _ *http.Request) {
-						next.Header().Set(headers.Connection, "close")
-						next.WriteHeader(http.StatusInternalServerError)
-						_, _ = next.Write([]byte("Internal Error"))
-					}).
-					Times(1)
-			}
-
-			d.MiddleWare(next).ServeHTTP(c.responseRecorder, c.request)
+			actualResponse, err := d.RoundTrip(c.request)
 
 			actual := logs.AllUntimed()
 
 			s.Len(actual, c.expectedMsgCount, unexpectedMsgCount)
 			s.Equal(c.expected, actual, unexpectedResults)
+			s.Equal(expectedResponse, actualResponse, unexpectedResponse)
+
+			if c.expectedError == nil {
+				s.Require().NoError(err, unexpectedError)
+				return
+			}
+
+			s.Require().Error(c.expectedError)
 		})
 	}
 }
 
-func handlerProvider() []handlerCase {
+func roundTripProvider() []roundTripCase {
 	reqBody := []byte(`{"name":"Boris", "age": 20}`)
 	request, _ := http.NewRequest(http.MethodPost, URL, bytes.NewBuffer(reqBody))
 	request.Header.Set(headers.ContentType, mime.JSON)
 
-	badRequest := httptest.NewRequest(http.MethodPost, "/ttt", bytes.NewBufferString("Foo"))
+	badRequest, _ := http.NewRequest(http.MethodPost, "/ttt", bytes.NewBufferString("Foo"))
 
-	return []handlerCase{
+	errResponse := httptest.NewRecorder()
+	errResponse.Code = 500
+	errResponse.Body = bytes.NewBufferString(`{"errors":[{"code":1,"message":"internal error"}]}`)
+
+	badResponse := httptest.NewRecorder()
+	badResponse.Code = 500
+	badResponse.Body = bytes.NewBufferString(`{"errors":[{"code":1,"message":"internal error"}]}`)
+	_ = badResponse.Result().Body.Close()
+
+	return []roundTripCase{
 		{
 			name:             "200 response",
 			request:          request,
 			responseRecorder: httptest.NewRecorder(),
+			expectedError:    nil,
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOK},
 				Context: []zapcore.Field{},
@@ -131,9 +133,9 @@ func handlerProvider() []handlerCase {
 			expectedMsgCount: 1,
 		},
 		{
-			name:             "next ServeHTTP writes error",
+			name:             "next RoundTrip returns error",
 			request:          request,
-			responseRecorder: httptest.NewRecorder(),
+			responseRecorder: errResponse,
 			expectedError:    errors.New("internal error"),
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: internalError},
@@ -146,7 +148,7 @@ func handlerProvider() []handlerCase {
 			name:             "dump request error",
 			request:          badRequest,
 			responseRecorder: httptest.NewRecorder(),
-			usePatch:         patchDumpRequest,
+			expectedError:    nil,
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: requestDumpErr},
 				Context: []zapcore.Field{},
@@ -160,8 +162,8 @@ func handlerProvider() []handlerCase {
 		{
 			name:             "dump response error",
 			request:          request,
-			responseRecorder: httptest.NewRecorder(),
-			expectedError:    errors.New("internal error"),
+			responseRecorder: badResponse,
+			expectedError:    nil,
 			usePatch:         patchDumpResponse,
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: responseDumpErr},

@@ -3,6 +3,9 @@
 
 name: Go
 
+permissions:
+  contents: read
+
 on:
   push:
   pull_request_target:
@@ -23,7 +26,7 @@ jobs:
           go-version: stable
           cache-dependency-path: '**/go.sum'
       - id: set-modules
-        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json; go list -C tests -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
+        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
 
   tidy:
     name: tidy
@@ -84,6 +87,15 @@ jobs:
           go install golang.org/x/vuln/cmd/govulncheck@latest
           cd ${{ matrix.modules }}
           govulncheck -show verbose ./...
+
+  spelling:
+    name: Spell Check with Typos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Actions Repository
+        uses: actions/checkout@v4
+      - name: Spell Check Repo
+        uses: crate-ci/typos@v1.31.1
 
   golangci:
     name: lint
@@ -148,17 +160,97 @@ jobs:
           go-version: ${{ matrix.go-version }}
           cache-dependency-path: '**/go.sum'
 
-      - name: Test all packages
-        run: go test -C tests -v ./... -race -coverprofile=./tests.out -covermode=atomic -coverpkg=./...
+      - name: Test client/dumper package
+        run: go test -C client/dumper -gcflags=-l ./... -race -coverprofile=./dumper.out -covermode=atomic
 
-      - name: Check coverage
+      - name: Test client/retry package
+        run: go test -C client/retry -gcflags=-l ./... -race -coverprofile=./retry.out -covermode=atomic
+
+      - name: Test headers package
+        run: go test -C headers -gcflags=-l ./... -race -coverprofile=./headers.out -covermode=atomic
+
+      - name: Test masker/auth package
+        run: go test -C masker/auth -gcflags=-l ./... -race -coverprofile=./auth.out -covermode=atomic
+
+      - name: Test masker/json package
+        run: go test -C masker/json -gcflags=-l ./... -race -coverprofile=./json.out -covermode=atomic
+
+      - name: Test masker/query package
+        run: go test -C masker/query -gcflags=-l ./... -race -coverprofile=./query.out -covermode=atomic
+
+      - name: Test server/dumper package
+        run: go test -C server/dumper -gcflags=-l ./... -race -coverprofile=./dumper.out -covermode=atomic
+
+      - name: Test storage/debug package
+        run: go test -C storage/debug -gcflags=-l ./... -race -coverprofile=./debug.out -covermode=atomic
+
+      - name: Check client/dumper coverage
         uses: vladopajic/go-test-coverage@v2.11.2
         with:
-          # Configure action using config file (option 1)
-          #config: ./tests/.testcoverage.yml
+          profile: ./client/dumper/dumper.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
 
-          # Configure action by specifying input parameters individually (option 2)
-          profile: ./tests/tests.out
+      - name: Check client/retry coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./client/retry/retry.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check headers coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./headers/headers.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check masker/auth coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./masker/auth/auth.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check masker/json coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./masker/json/json.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check masker/query coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./masker/query/query.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check server/dumper coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./server/dumper/dumper.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check storage/debug coverage
+        uses: vladopajic/go-test-coverage@v2.11.2
+        with:
+          profile: ./storage/debug/debug.out
           local-prefix: github.com/nafigator/http
           threshold-file: 100
           threshold-package: 100
@@ -168,7 +260,7 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./tests/tests.out
+          files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./server/dumper/dumper.out, ./storage/debug/debug.out
           flags: unittests
           name: codecov-http
           verbose: false

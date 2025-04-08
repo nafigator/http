@@ -18,8 +18,8 @@ jobs:
     outputs:
       modules: ${{ steps.set-modules.outputs.modules }}
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: stable
           cache-dependency-path: '**/go.sum'
@@ -34,13 +34,13 @@ jobs:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
       - name: Check module
         id: check_files
-        uses: andstor/file-existence-action@v3.0.0
+        uses: andstor/file-existence-action@v3
         with:
           files: "${{ matrix.modules }}/go.mod"
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5
         if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
@@ -61,13 +61,13 @@ jobs:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
         go-version: [ oldstable, stable ]
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
       - name: Check module
         id: check_files
-        uses: andstor/file-existence-action@v3.0.0
+        uses: andstor/file-existence-action@v3
         with:
           files: "${{ matrix.modules }}/go.mod"
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/setup-go@v5
         if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
@@ -91,9 +91,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions Repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
       - name: Spell Check Repo
-        uses: crate-ci/typos@v1.31.1
+        uses: crate-ci/typos@v1
 
   golangci:
     name: lint
@@ -103,13 +103,13 @@ jobs:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
     steps:
-      - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-go@v5.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: stable
           cache-dependency-path: 'go.sum'
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v7.0.0
+        uses: golangci/golangci-lint-action@v7
         with:
           # Require: The version of golangci-lint to use.
           # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
@@ -149,10 +149,10 @@ jobs:
       matrix:
         go-version: [ stable, oldstable ]
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v5.4.0
+        uses: actions/setup-go@v5
         with:
           # Module go.uber.org/mock/gomock has go 1.23 dependency
           go-version: ${{ matrix.go-version }}
@@ -255,7 +255,7 @@ jobs:
           threshold-total: 100
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5.4.0
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./server/dumper/dumper.out, ./storage/debug/debug.out

@@ -8,8 +8,7 @@ permissions:
 
 on:
   push:
-  pull_request_target:
-    branches: [ "main" ]
+  pull_request:
 
 env:
   GOLANGCI_LINT_VERSION: 'v2.0.2'

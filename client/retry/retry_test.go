@@ -8,12 +8,13 @@ import (
 	"net/http/httptest"
 	"time"
 
-	"github.com/nafigator/http/headers"
-	"github.com/nafigator/http/mime"
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest/observer"
+
+	"github.com/nafigator/http/headers"
+	"github.com/nafigator/http/mime"
 )
 
 const (

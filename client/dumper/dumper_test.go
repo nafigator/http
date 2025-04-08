@@ -7,14 +7,15 @@ import (
 	"net/http/httptest"
 
 	"bou.ke/monkey"
-	"github.com/nafigator/http/headers"
-	"github.com/nafigator/http/masker/query"
-	"github.com/nafigator/http/mime"
-	"github.com/nafigator/http/storage/debug"
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest/observer"
+
+	"github.com/nafigator/http/headers"
+	"github.com/nafigator/http/masker/query"
+	"github.com/nafigator/http/mime"
+	"github.com/nafigator/http/storage/debug"
 )
 
 const (

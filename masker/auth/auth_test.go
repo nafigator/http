@@ -5,8 +5,9 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/nafigator/http/masker/query"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/nafigator/http/masker/query"
 )
 
 type testCase struct {

@@ -7,8 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nafigator/http/masker/auth"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/nafigator/http/masker/auth"
 )
 
 type testCase struct {

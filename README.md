@@ -1,6 +1,6 @@
 <a id="readme-top"></a>
 # http
-[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] ![Repo size][Repo size badge]
+[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![OpenSSF Best Practices][OpenSSF Best Practices badge]][OpenSSF Best Practices src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] ![Repo size][Repo size badge]
 
 Collection of Go HTTP packages
 
@@ -54,6 +54,8 @@ as a public API. Read more on [SemVer.org][semver src].
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/go.yml/badge.svg?branch=main
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg
+[OpenSSF Best Practices src]: https://www.bestpractices.dev/projects/10396
+[OpenSSF Best Practices badge]: https://www.bestpractices.dev/projects/10396/badge
 [Conventional commits src]: https://conventionalcommits.org
 [Conventional commits badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-teal.svg
 [Repo size badge]: https://img.shields.io/github/repo-size/nafigator/http?logo=github&color=teal

@@ -1,6 +1,6 @@
 <a id="readme-top"></a>
 # http
-[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![OpenSSF Best Practices][OpenSSF Best Practices badge]][OpenSSF Best Practices src] [![Conventional Commits][Conventional commits badge]][Conventional commits src] ![Repo size][Repo size badge]
+[![GitHub license][License img]][License src] [![Github main status][Github main status badge]][Github main status src] [![Coverage report][Codecov report badge]][Codecov report src] [![OpenSSF Best Practices][OpenSSF Best Practices badge]][OpenSSF Best Practices src] [![Conventional Commits][Conventional commits badge]][Conventional commits src]
 
 Collection of Go HTTP packages
 

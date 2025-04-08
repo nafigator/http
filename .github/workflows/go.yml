@@ -18,8 +18,8 @@ jobs:
     outputs:
       modules: ${{ steps.set-modules.outputs.modules }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:
           go-version: stable
           cache-dependency-path: '**/go.sum'
@@ -34,13 +34,13 @@ jobs:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Check module
         id: check_files
-        uses: andstor/file-existence-action@v3
+        uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
         with:
           files: "${{ matrix.modules }}/go.mod"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
@@ -61,13 +61,13 @@ jobs:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
         go-version: [ oldstable, stable ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Check module
         id: check_files
-        uses: andstor/file-existence-action@v3
+        uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
         with:
           files: "${{ matrix.modules }}/go.mod"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
@@ -91,9 +91,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Actions Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Spell Check Repo
-        uses: crate-ci/typos@v1
+        uses: crate-ci/typos@b1a1ef3893ff35ade0cfa71523852a49bfd05d19 # v1.31.1
 
   golangci:
     name: lint
@@ -103,13 +103,13 @@ jobs:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:
           go-version: stable
           cache-dependency-path: 'go.sum'
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v7
+        uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # v7.0.0
         with:
           # Require: The version of golangci-lint to use.
           # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
@@ -124,7 +124,7 @@ jobs:
           #
           # Note: By default, the `.golangci.yml` file should be at the root of the repository.
           # The location of the configuration file can be changed by using `--config=`
-          args: --timeout=20m --config=/home/runner/work/http/http/.golangci.yml
+          args: --timeout=20m --config=/home/runner/work/http/http/.golangci.yml --output.sarif.path="${{ matrix.modules }}/results.sarif"
 
           # Optional: show only new issues if it's a pull request. The default value is `false`.
           # only-new-issues: true
@@ -142,6 +142,16 @@ jobs:
           # Optional: The mode to install golangci-lint. It can be 'binary' or 'goinstall'.
           # install-mode: "goinstall"
 
+      - name: Upload SARIF file
+        if: always()
+        uses: github/codeql-action/upload-sarif@45775bd8235c68ba998cffa5171334d58593da47 # v3.28.15
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: "${{ matrix.modules }}/results.sarif"
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: golangci-lint
+
   tests:
     name: tests
     runs-on: ubuntu-latest
@@ -149,10 +159,10 @@ jobs:
       matrix:
         go-version: [ stable, oldstable ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:
           # Module go.uber.org/mock/gomock has go 1.23 dependency
           go-version: ${{ matrix.go-version }}
@@ -183,7 +193,7 @@ jobs:
         run: go test -C storage/debug -gcflags=-l ./... -race -coverprofile=./debug.out -covermode=atomic
 
       - name: Check client/dumper coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./client/dumper/dumper.out
           local-prefix: github.com/nafigator/http
@@ -192,7 +202,7 @@ jobs:
           threshold-total: 100
 
       - name: Check client/retry coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./client/retry/retry.out
           local-prefix: github.com/nafigator/http
@@ -201,7 +211,7 @@ jobs:
           threshold-total: 100
 
       - name: Check headers coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./headers/headers.out
           local-prefix: github.com/nafigator/http
@@ -210,7 +220,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/auth coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/auth/auth.out
           local-prefix: github.com/nafigator/http
@@ -219,7 +229,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/json coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/json/json.out
           local-prefix: github.com/nafigator/http
@@ -228,7 +238,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/query coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/query/query.out
           local-prefix: github.com/nafigator/http
@@ -237,7 +247,7 @@ jobs:
           threshold-total: 100
 
       - name: Check server/dumper coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./server/dumper/dumper.out
           local-prefix: github.com/nafigator/http
@@ -246,7 +256,7 @@ jobs:
           threshold-total: 100
 
       - name: Check storage/debug coverage
-        uses: vladopajic/go-test-coverage@v2.11.2
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./storage/debug/debug.out
           local-prefix: github.com/nafigator/http
@@ -255,7 +265,7 @@ jobs:
           threshold-total: 100
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./server/dumper/dumper.out, ./storage/debug/debug.out

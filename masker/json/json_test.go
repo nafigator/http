@@ -8,8 +8,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/nafigator/http/masker/auth"
 )
 
 type testCase struct {
@@ -145,10 +143,10 @@ func dataProvider() map[string]testCase {
 				Host: "avito.ru",
 			},
 			unmasked: toPtr(2),
-			next:     auth.New(),
+			next:     New([]string{"pass"}),
 			params:   []string{"secret-int"},
 			dump:     "API exchange\nPOST /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":123456789}\r\n", //nolint:lll
-			expected: "API exchange\nPOST /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n", //nolint:lll
+			expected: "API exchange\nPOST /user/121 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nContent-Type: application/json\r\nAccept-Encoding: gzip\r\n\r\n{\"secret-int\":*******89}\r\n", //nolint:lll
 		},
 		"request with int and high unmasked": {
 			request: http.Request{

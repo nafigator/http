@@ -6,8 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/nafigator/http/masker/query"
 )
 
 type testCase struct {
@@ -91,9 +89,9 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			next:     query.New([]string{"secret", "password"}),
+			next:     New(),
 			dump:     "API exchange\nGET /user/153?secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
-			expected: "API exchange\nGET /user/153?secret=*****234FFD5&password=*******perPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			expected: "API exchange\nGET /user/153?secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
 		"request with query and without bearer": {
 			request: http.Request{
@@ -111,9 +109,9 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			next:     query.New([]string{"secret", "password"}),
+			next:     New(),
 			dump:     "API exchange\nGET /user/154?quote=1&secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
-			expected: "API exchange\nGET /user/154?quote=1&secret=*****234FFD5&password=*******perPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			expected: "API exchange\nGET /user/154?quote=1&secret=FA2C1234FFD5&password=mega-superPASS&param=32 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
 		"request with bearer non default unmasked length": {
 			request: http.Request{

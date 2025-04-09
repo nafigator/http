@@ -2,10 +2,8 @@ module github.com/nafigator/http/client/retry
 
 go 1.23
 
-toolchain go1.24.1
-
 require (
-	github.com/nafigator/http/headers v1.0.9
+	github.com/nafigator/http/headers v1.0.10
 	github.com/nafigator/http/mime v1.1.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/mock v0.5.1

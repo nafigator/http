@@ -17,10 +17,12 @@ import (
 )
 
   ...
+  // In HTTP handler
   rw := wrapper.New(w, r)
-  ...
+  rw.Header().Set("Content-Type", "text/plain")
+  fmt.Fprint(rw, "OK")
+  // Get response for your needs
   response := rw.Result()
-  ...
 ```
 
 ## Tests

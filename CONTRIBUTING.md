@@ -128,7 +128,9 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/nafiga
   - Create your feature branch: `git checkout -b my-new-feature`
   - Commit your changes: `git commit -am 'feat: Add some feature'`
   - Push to the branch: `git push origin my-new-feature`
-  - Submit a pull request :tada:
+  - Submit a pull request
+  - When all PR checks completed, squash commits
+  - Done! :tada:
 - Ensure the PR description clearly describes the problem and solution.
   Include the relevant issue number if applicable.
 

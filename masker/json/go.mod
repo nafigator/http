@@ -3,7 +3,7 @@ module github.com/nafigator/http/masker/json
 go 1.18
 
 require (
-	github.com/nafigator/http/masker/auth v1.0.2
+	github.com/nafigator/http/masker/auth v1.0.3
 	github.com/stretchr/testify v1.10.0
 )
 

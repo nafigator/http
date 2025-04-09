@@ -1,4 +1,4 @@
-// Package debug provides flusher interface with debug logger under hood.
+// Package debug provides flusher interface implementation with debug logger under hood.
 package debug
 
 import "context"

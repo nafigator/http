@@ -27,7 +27,7 @@ Collection of Go HTTP packages
 [Package](https://github.com/nafigator/http/blob/main/server/dumper/README.md) for dumping incoming HTTP requests/responses.
 
 #### storage/debug
-[Package](https://github.com/nafigator/http/tree/main/storage/debug) with implementation of output HTTP-dumps as logger DEBUG messages.
+[Package](https://github.com/nafigator/http/tree/main/storage/debug) provides flusher interface implementation with debug logger under hood.
 
 #### headers
 [Package](https://github.com/nafigator/http/blob/main/headers/README.md) with constants for HTTP headers.

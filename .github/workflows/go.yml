@@ -43,44 +43,32 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
-        if: ${{ steps.filter.outputs.go == 'true' }}
         with:
           go-version: stable
           cache-dependency-path: '**/go.sum'
       - id: set-modules
-        if: ${{ steps.filter.outputs.go == 'true' }}
         run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
 
   tidy:
     name: tidy
     needs: detect-modules
-    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Check module
-        id: check_files
-        uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
-        with:
-          files: "${{ matrix.modules }}/go.mod"
       - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
-        if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
           go-version: stable
-
       - name: Run tidy
-        if: steps.check_files.outputs.files_exists == 'true'
         working-directory: ${{ matrix.modules }}
         run: go mod tidy --diff
 
   checks:
     name: checks
     needs: detect-modules
-    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -88,24 +76,14 @@ jobs:
         go-version: [ oldstable, stable ]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Check module
-        id: check_files
-        uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
-        with:
-          files: "${{ matrix.modules }}/go.mod"
       - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
-        if: steps.check_files.outputs.files_exists == 'true'
         with:
           cache-dependency-path: 'go.sum'
           go-version: ${{ matrix.go-version }}
-
       - name: Run Download
-        if: steps.check_files.outputs.files_exists == 'true'
         working-directory: ${{ matrix.modules }}
         run: go mod download
-
       - name: Run govulncheck
-        if: steps.check_files.outputs.files_exists == 'true'
         working-directory: ${{ matrix.modules }}
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@v0.0.0-20250106192626-d1f380186385 # v1.1.4
@@ -123,7 +101,6 @@ jobs:
   golangci:
     name: lint
     needs: detect-modules
-    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -181,14 +158,12 @@ jobs:
   tests:
     name: tests
     needs: detect-modules
-    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         go-version: [ stable, oldstable ]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
       - name: Set up Go
         uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
         with:

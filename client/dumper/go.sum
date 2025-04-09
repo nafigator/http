@@ -4,8 +4,10 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/nafigator/http/headers v1.0.9 h1:jX+bNHAv9nPX24IUnm7o9jAx6WdQHmwXN+Wz30ISntI=
 github.com/nafigator/http/headers v1.0.9/go.mod h1:1HFNFasu6FaZ8jYr1eYzkRZDSoBeDxwPkRCeLc6a/Zs=
-github.com/nafigator/http/masker/query v1.0.2 h1:Akoidum1pghNb96cpKr7RbfFge31i0nQbdyZUdVy1vc=
-github.com/nafigator/http/masker/query v1.0.2/go.mod h1:vVrt2eAb6zvwpha8oC7FZpdky63eY/XFUzXI0Hu2IHs=
+github.com/nafigator/http/masker/auth v1.0.2 h1:lGXSfZGdh1sLGP8Lc6jkK6slUBm3JDcO4UZWfqU9YA0=
+github.com/nafigator/http/masker/auth v1.0.2/go.mod h1:RPU5O+1D5zBurO2kOnwVIbJOTBu5tBpxhkSmJ4qDt80=
+github.com/nafigator/http/masker/query v1.0.3 h1:DywP0DzJkmjapmaFnRrPQLcKkGmLp9SQ0j8S+85NMps=
+github.com/nafigator/http/masker/query v1.0.3/go.mod h1:L0W3OZy24JuRqf4xB6oO1UbOeK3WGrpHSp/saYEcZtA=
 github.com/nafigator/http/mime v1.1.0 h1:TkWMLNVMSTFM1eJoirclnFK+hK2Wrj7N5f6hAr35Q/g=
 github.com/nafigator/http/mime v1.1.0/go.mod h1:BMUh/07lDuXRZCqO3a3frssJ/wD3Ab/M7Nya9gvRqlo=
 github.com/nafigator/http/storage/debug v1.0.0 h1:z8mKoXwsf7eS+Zh6wBwvl7CukyQF++v4YL2kD40PYT4=

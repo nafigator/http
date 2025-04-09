@@ -32,6 +32,7 @@ jobs:
               - '**/*.go'
               - '**/*.mod'
               - '**/*.sum'
+              - '.golangci.yml'
 
   detect-modules:
     runs-on: ubuntu-latest

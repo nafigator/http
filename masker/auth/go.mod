@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/nafigator/http/headers v1.0.10
-	github.com/nafigator/http/masker/query v1.0.2
+	github.com/nafigator/http/masker/query v1.0.3
 	github.com/stretchr/testify v1.10.0
 )
 

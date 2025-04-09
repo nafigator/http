@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/nafigator/http/headers v1.0.9
+	github.com/nafigator/http/headers v1.0.10
 	github.com/nafigator/http/masker/query v1.0.3
 	github.com/nafigator/http/mime v1.1.0
 	github.com/nafigator/http/storage/debug v1.0.1

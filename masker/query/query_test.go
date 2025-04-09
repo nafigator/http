@@ -6,8 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/nafigator/http/masker/auth"
 )
 
 type testCase struct {
@@ -157,10 +155,10 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			next:     auth.New(),
+			next:     New([]string{"type"}),
 			params:   []string{"password", "secret"},
 			dump:     "API exchange\nGET /user/151?secret=FA2C1234FFD5&password=mega-superPASS&param=10 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
-			expected: "API exchange\nGET /user/151?secret=*****234FFD5&password=*******perPASS&param=10 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
+			expected: "API exchange\nGET /user/151?secret=*****234FFD5&password=*******perPASS&param=10 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll
 		},
 	}
 }

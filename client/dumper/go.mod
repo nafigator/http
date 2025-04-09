@@ -9,7 +9,7 @@ require (
 	github.com/nafigator/http/mime v1.1.0
 	github.com/nafigator/http/storage/debug v1.0.0
 	github.com/stretchr/testify v1.10.0
-	go.uber.org/mock v0.5.0
+	go.uber.org/mock v0.5.1
 	go.uber.org/zap v1.27.0
 )
 

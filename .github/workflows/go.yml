@@ -189,6 +189,9 @@ jobs:
       - name: Test masker/query package
         run: go test -C masker/query -gcflags=-l ./... -race -coverprofile=./query.out -covermode=atomic
 
+      - name: Test response/wrapper package
+        run: go test -C response/wrapper -gcflags=-l ./... -race -coverprofile=./wrapper.out -covermode=atomic
+
       - name: Test server/dumper package
         run: go test -C server/dumper -gcflags=-l ./... -race -coverprofile=./dumper.out -covermode=atomic
 
@@ -249,6 +252,15 @@ jobs:
           threshold-package: 100
           threshold-total: 100
 
+      - name: Check response/wrapper coverage
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
+        with:
+          profile: ./response/wrapper/wrapper.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
       - name: Check server/dumper coverage
         uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
@@ -271,7 +283,7 @@ jobs:
         uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574 # v5.4.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./server/dumper/dumper.out, ./storage/debug/debug.out
+          files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./response/wrapper/wrapper.out, ./server/dumper/dumper.out, ./storage/debug/debug.out
           flags: unittests
           name: codecov-http
           verbose: false

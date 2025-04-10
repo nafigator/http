@@ -54,7 +54,6 @@ as a public API. Read more on [SemVer.org][semver src].
 [![Docker][Docker badge]][Docker URL]&nbsp;&nbsp;&nbsp;&nbsp;[![Codecov][Codecov badge]][Codecov URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub][Github badge]][Github URL]&nbsp;&nbsp;&nbsp;&nbsp;[![GitHub Actions][Github actions badge]][Github actions URL]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-</details>
 
 [License img]: https://img.shields.io/github/license/nafigator/http?color=teal
 [License src]: https://www.tldrlegal.com/license/mit-license

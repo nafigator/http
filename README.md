@@ -35,6 +35,14 @@ Collection of Go HTTP packages
 #### mime
 [Package](https://github.com/nafigator/http/blob/main/mime/README.md) with constants for MIME types.
 
+### Dependencies
+<details>
+  <summary>Diagram</summary>
+
+![Module dependencies][Module dependencies img]
+
+</details>
+
 ### Versioning
 Each Go module follows *"Semantic Versioning"* specifications. The signature of exported package functions is used
 as a public API. Read more on [SemVer.org][semver src].
@@ -77,4 +85,5 @@ as a public API. Read more on [SemVer.org][semver src].
 [Github URL]: https://github.com
 [Github actions badge]: https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff&logoSize=auto&labelColor=githubactions
 [Github actions URL]: https://github.com/nafigator/http/actions
+[Module dependencies img]: .assets/dependencies.svg
 [semver src]: http://semver.org

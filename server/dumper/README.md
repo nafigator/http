@@ -76,7 +76,7 @@ encoderConfig:
 
 func main() {
   log := zapper.Must(conf.MustYML(zapConfig))
-  d := dumper.New(debug.new(log))
+  d := dumper.New(debug.New(log))
   mux := http.NewServeMux()
 
   mux.Handle("/", Home)

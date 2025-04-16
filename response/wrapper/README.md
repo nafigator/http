@@ -28,7 +28,7 @@ import (
 ## Tests
 Clone repo and run:
 ```shell
-go test -C tests ./...
+go test
 ```
 
 [Release img]: https://img.shields.io/github/v/tag/nafigator/http?logo=github&labelColor=333&color=teal&filter=response/wrapper*

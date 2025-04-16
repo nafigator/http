@@ -43,7 +43,7 @@ Example above will do `RequestCount` request attempts until 200 response receive
 ## Tests
 Clone repo and run:
 ```shell
-go test -C tests ./...
+go test
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

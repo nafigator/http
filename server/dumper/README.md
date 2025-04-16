@@ -425,7 +425,7 @@ Where the second parameter is a pointer to final dump.
 ## Tests
 Clone repo and run:
 ```shell
-go test -C tests ./...
+go test
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

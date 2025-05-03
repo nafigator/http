@@ -1,6 +1,6 @@
 module github.com/nafigator/http/client/dumper
 
-go 1.22
+go 1.23
 
 require (
 	bou.ke/monkey v1.0.2
@@ -9,7 +9,7 @@ require (
 	github.com/nafigator/http/mime v1.1.0
 	github.com/nafigator/http/storage/debug v1.0.2
 	github.com/stretchr/testify v1.10.0
-	go.uber.org/mock v0.5.1
+	go.uber.org/mock v0.5.2
 	go.uber.org/zap v1.27.0
 )
 

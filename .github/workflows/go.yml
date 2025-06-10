@@ -47,7 +47,7 @@ jobs:
           go-version: stable
           cache-dependency-path: '**/go.sum'
       - id: set-modules
-        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
+        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/status -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
 
   tidy:
     name: tidy

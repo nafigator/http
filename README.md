@@ -23,6 +23,9 @@ Collection of Go HTTP packages
 #### response/wrapper
 [Package](https://github.com/nafigator/http/blob/main/response/wrapper/README.md) for dumping HTTP responses.
 
+#### response/status
+[Package](https://github.com/nafigator/http/blob/main/response/status/README.md) provides functions for HTTP-statuses.
+
 #### server/dumper
 [Package](https://github.com/nafigator/http/blob/main/server/dumper/README.md) for dumping incoming HTTP requests/responses.
 

@@ -15,7 +15,7 @@ on:
     - cron: '33 2 * * *'
 
 env:
-  GOLANGCI_LINT_VERSION: 'v2.0.2'
+  GOLANGCI_LINT_VERSION: 'v2.1.6'
 
 jobs:
   detect-modules:
@@ -181,7 +181,7 @@ jobs:
         run: go test -C storage/debug -gcflags=-l ./... -race -coverprofile=./debug.out -covermode=atomic
 
       - name: Check client/dumper coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./client/dumper/dumper.out
           local-prefix: github.com/nafigator/http
@@ -190,7 +190,7 @@ jobs:
           threshold-total: 100
 
       - name: Check client/retry coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./client/retry/retry.out
           local-prefix: github.com/nafigator/http
@@ -199,7 +199,7 @@ jobs:
           threshold-total: 100
 
       - name: Check headers coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./headers/headers.out
           local-prefix: github.com/nafigator/http
@@ -208,7 +208,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/auth coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/auth/auth.out
           local-prefix: github.com/nafigator/http
@@ -217,7 +217,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/json coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/json/json.out
           local-prefix: github.com/nafigator/http
@@ -226,7 +226,7 @@ jobs:
           threshold-total: 100
 
       - name: Check masker/query coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./masker/query/query.out
           local-prefix: github.com/nafigator/http
@@ -235,7 +235,7 @@ jobs:
           threshold-total: 100
 
       - name: Check response/wrapper coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./response/wrapper/wrapper.out
           local-prefix: github.com/nafigator/http
@@ -244,7 +244,7 @@ jobs:
           threshold-total: 100
 
       - name: Check server/dumper coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./server/dumper/dumper.out
           local-prefix: github.com/nafigator/http
@@ -253,7 +253,7 @@ jobs:
           threshold-total: 100
 
       - name: Check storage/debug coverage
-        uses: vladopajic/go-test-coverage@ebf1fb6f7267bd290a83cc16f535067b51fd1d0b # v2.15.0
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./storage/debug/debug.out
           local-prefix: github.com/nafigator/http

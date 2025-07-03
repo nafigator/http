@@ -22,3 +22,7 @@ func (s *NoContent) Status() int { return http.StatusNoContent }
 type ResetContent struct{}
 
 func (s *ResetContent) Status() int { return http.StatusResetContent }
+
+type ServiceUnavailable struct{}
+
+func (s *ServiceUnavailable) Status() int { return http.StatusServiceUnavailable }

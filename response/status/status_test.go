@@ -29,12 +29,18 @@ func TestStatus(t *testing.T) {
 	actual = new(NoContent).Status()
 
 	if actual != http.StatusNoContent {
-		t.Logf("status.Accepted unexpected result %v", actual)
+		t.Logf("status.NoContent unexpected result %v", actual)
 	}
 
 	actual = new(ResetContent).Status()
 
 	if actual != http.StatusResetContent {
-		t.Logf("status.Accepted unexpected result %v", actual)
+		t.Logf("status.StatusResetContent unexpected result %v", actual)
+	}
+
+	actual = new(ServiceUnavailable).Status()
+
+	if actual != http.StatusServiceUnavailable {
+		t.Logf("status.ServiceUnavailable unexpected result %v", actual)
 	}
 }

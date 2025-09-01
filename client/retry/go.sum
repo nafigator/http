@@ -1,7 +1,7 @@
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/nafigator/http/headers v1.0.10 h1:atmDJGcMuWFuEWqME4w1iJ0fmgGiqC5LLMpHwHlp1jg=
-github.com/nafigator/http/headers v1.0.10/go.mod h1:AVhXiEVeA4UllrQn4030lYXodkxHkWOvApdWZ4yC3Yo=
+github.com/nafigator/http/headers v1.0.11 h1:GsuM4uTwLmqKNZXrd5AysoQWLBJT9G5ozbK01AH02RE=
+github.com/nafigator/http/headers v1.0.11/go.mod h1:xsQRCo1mj0iN9M20Q7HKh/GKBq70SI/r6iFbkSO4OyY=
 github.com/nafigator/http/mime v1.1.0 h1:TkWMLNVMSTFM1eJoirclnFK+hK2Wrj7N5f6hAr35Q/g=
 github.com/nafigator/http/mime v1.1.0/go.mod h1:BMUh/07lDuXRZCqO3a3frssJ/wD3Ab/M7Nya9gvRqlo=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

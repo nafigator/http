@@ -4,10 +4,10 @@ go 1.23.0
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/nafigator/http/headers v1.0.10
-	github.com/nafigator/http/masker/query v1.0.4
+	github.com/nafigator/http/headers v1.0.11
+	github.com/nafigator/http/masker/query v1.0.5
 	github.com/nafigator/http/mime v1.1.0
-	github.com/nafigator/http/storage/debug v1.0.2
+	github.com/nafigator/http/storage/debug v1.0.3
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.6.0
 	go.uber.org/zap v1.27.0

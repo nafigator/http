@@ -10,8 +10,8 @@ github.com/nafigator/http/mime v1.1.0 h1:TkWMLNVMSTFM1eJoirclnFK+hK2Wrj7N5f6hAr3
 github.com/nafigator/http/mime v1.1.0/go.mod h1:BMUh/07lDuXRZCqO3a3frssJ/wD3Ab/M7Nya9gvRqlo=
 github.com/nafigator/http/response/wrapper v1.0.3 h1:LQW+hLMrSftruTmlBG/K6kdIY3vWjniAiwOo0G9JmYc=
 github.com/nafigator/http/response/wrapper v1.0.3/go.mod h1:ufZqdqEpm+JQUxlnrULDK9yC2X/SNl1DPLWatSt6luw=
-github.com/nafigator/http/storage/debug v1.0.3 h1:7qvOv2tx6rfp/Oo05LAoDuHfTkzpKKZVTr4qnQFa5Bc=
-github.com/nafigator/http/storage/debug v1.0.3/go.mod h1:ro5da/VF+Ofld4nMfnBFfFbabKiLI/hL5/nB5lSDLcw=
+github.com/nafigator/http/storage/debug v1.0.4 h1:CcNRlYWrHENeLvA4y80RtPHDQekZwpszyUOL/jNdvio=
+github.com/nafigator/http/storage/debug v1.0.4/go.mod h1:SQSHjHw/8Jo8+u0g1U0IAzkvtBrV3RHenEDr8x1uFQI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=

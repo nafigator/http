@@ -24,7 +24,7 @@ type flusher interface {
 }
 
 type logger interface {
-	Error(args ...interface{})
+	Error(args ...any)
 }
 
 type HTTPDumper struct {
@@ -77,7 +77,7 @@ func (h *HTTPDumper) WithFilter(f func(string) bool) *HTTPDumper {
 	return h
 }
 
-// RoundTrip http.RoundTripper implementation.
+// RoundTrip [http.RoundTripper] implementation.
 func (h *HTTPDumper) RoundTrip(req *http.Request) (*http.Response, error) {
 	b, e := httputil.DumpRequestOut(req, h.filter(req.Header.Get(headers.ContentType)))
 	if e != nil {

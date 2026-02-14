@@ -6,7 +6,6 @@
 //	mockgen -destination=roundtripper_test.go -package=dumper net/http RoundTripper
 //
 
-// Package dumper is a generated GoMock package.
 package dumper
 
 import (

@@ -35,11 +35,7 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 	s := strings.Fields(req.Header.Get(headers.Authorization))
 	if len(s) > 0 {
 		secretIdx := len(s) - 1
-		replacementLength := len(s[secretIdx]) - m.unmasked
-
-		if replacementLength < 0 {
-			replacementLength = 0
-		}
+		replacementLength := max(len(s[secretIdx])-m.unmasked, 0)
 
 		s[secretIdx] = strings.Repeat("*", replacementLength) + s[secretIdx][replacementLength:]
 	}

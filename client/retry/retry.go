@@ -1,4 +1,4 @@
-// Package retry provides retry functionality for http.Client.
+// Package retry provides retry functionality for [http.Client].
 package retry
 
 import (
@@ -15,7 +15,7 @@ const (
 )
 
 type logger interface {
-	Error(args ...interface{})
+	Error(args ...any)
 }
 
 type HTTPRetry struct {
@@ -51,7 +51,7 @@ func New(
 	}
 }
 
-// RoundTrip http.RoundTripper implementation.
+// RoundTrip [http.RoundTripper] implementation.
 func (h *HTTPRetry) RoundTrip(req *http.Request) (*http.Response, error) {
 	var err error
 	var res *http.Response

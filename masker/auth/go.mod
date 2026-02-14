@@ -1,6 +1,6 @@
 module github.com/nafigator/http/masker/auth
 
-go 1.18
+go 1.23.0
 
 require (
 	github.com/nafigator/http/headers v1.0.11

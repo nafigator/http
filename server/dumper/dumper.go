@@ -25,7 +25,7 @@ type flusher interface {
 }
 
 type logger interface {
-	Error(args ...interface{})
+	Error(args ...any)
 }
 
 type HTTPDumper struct {

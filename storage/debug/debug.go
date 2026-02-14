@@ -1,10 +1,10 @@
 // Package debug provides flusher interface implementation with debug logger under hood.
-package debug
+package debug //nolint:revive	// Acknowledged
 
 import "context"
 
 type logger interface {
-	Debug(args ...interface{})
+	Debug(args ...any)
 }
 
 type Debug struct {

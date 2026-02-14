@@ -1,3 +1,3 @@
 module github.com/nafigator/http/mime
 
-go 1.17
+go 1.23.0

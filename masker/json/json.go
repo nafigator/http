@@ -43,12 +43,7 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 		val := matches[0][2]
 		suffix := matches[0][3]
 
-		replacementLength := len(val) - m.unmasked
-
-		if replacementLength < 0 {
-			replacementLength = 0
-		}
-
+		replacementLength := max(len(val)-m.unmasked, 0)
 		replacement := strings.Repeat("*", replacementLength) + val[replacementLength:]
 
 		*dump = re.ReplaceAllString(*dump, prefix+replacement+suffix)

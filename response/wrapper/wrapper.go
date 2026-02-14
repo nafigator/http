@@ -1,4 +1,4 @@
-// Package wrapper used for copy http.ResponseWriter access.
+// Package wrapper used for copy [http.ResponseWriter] access.
 package wrapper
 
 import (
@@ -13,7 +13,7 @@ type Wrapper struct {
 	r http.Response
 }
 
-// New function creates a wrapper for the http.ResponseWriter.
+// New function creates a wrapper for the [http.ResponseWriter].
 func New(w http.ResponseWriter, r *http.Request) Wrapper {
 	return Wrapper{
 		w: w,
@@ -25,19 +25,19 @@ func New(w http.ResponseWriter, r *http.Request) Wrapper {
 	}
 }
 
-// Write function overwrites the http.ResponseWriter Write() function.
+// Write function overwrites the [http.ResponseWriter] Write() function.
 func (w *Wrapper) Write(buf []byte) (int, error) {
 	w.r.Body = io.NopCloser(bytes.NewBuffer(buf))
 
 	return w.w.Write(buf)
 }
 
-// Header function overwrites the http.ResponseWriter Header() function.
+// Header function overwrites the [http.ResponseWriter] Header() function.
 func (w *Wrapper) Header() http.Header {
 	return w.w.Header()
 }
 
-// WriteHeader function overwrites the http.ResponseWriter WriteHeader() function.
+// WriteHeader function overwrites the [http.ResponseWriter] WriteHeader() function.
 func (w *Wrapper) WriteHeader(statusCode int) {
 	w.r.StatusCode = statusCode
 

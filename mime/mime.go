@@ -1,5 +1,5 @@
 // Package mime provides list of MIME constants.
-package mime
+package mime //nolint:revive // Acknowledged
 
 // Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types
 const (

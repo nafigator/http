@@ -6,7 +6,6 @@
 //	mockgen -destination=roundtripper_test.go -package=retry net/http RoundTripper
 //
 
-// Package retry is a generated GoMock package.
 package retry
 
 import (

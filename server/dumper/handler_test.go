@@ -6,7 +6,6 @@
 //	mockgen -destination=handler_test.go -package=dumper net/http Handler
 //
 
-// Package dumper is a generated GoMock package.
 package dumper
 
 import (

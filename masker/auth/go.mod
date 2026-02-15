@@ -3,7 +3,7 @@ module github.com/nafigator/http/masker/auth
 go 1.23.0
 
 require (
-	github.com/nafigator/http/headers v1.0.11
+	github.com/nafigator/http/headers v1.0.12
 	github.com/stretchr/testify v1.11.1
 )
 

@@ -1,5 +1,5 @@
 // Package debug provides flusher interface implementation with debug logger under hood.
-package debug //nolint:revive	// Acknowledged
+package debug
 
 import "context"
 

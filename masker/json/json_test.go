@@ -1,4 +1,4 @@
-package json //nolint:revive	// Acknowledged
+package json //nolint:revive,nolintlint	// Acknowledged
 
 import (
 	"io"

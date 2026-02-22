@@ -1,4 +1,4 @@
-package debug //nolint:revive	// Acknowledged
+package debug //nolint:revive,nolintlint	// Acknowledged
 
 import (
 	"context"

@@ -1,5 +1,5 @@
 // Package json provides masking functionality for HTTP dumps.
-package json
+package json //nolint:revive,nolintlint	// Acknowledged
 
 import (
 	"net/http"

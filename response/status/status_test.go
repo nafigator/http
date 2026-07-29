@@ -6,6 +6,8 @@ import (
 )
 
 func TestStatus(t *testing.T) {
+	t.Parallel()
+
 	var actual int
 
 	actual = new(Ok).Status()

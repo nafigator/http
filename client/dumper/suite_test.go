@@ -22,6 +22,7 @@ type suite struct {
 
 // TestRun run tests suite.
 func TestRun(t *testing.T) {
+	t.Parallel()
 	ss.Run(t, &suite{})
 }
 

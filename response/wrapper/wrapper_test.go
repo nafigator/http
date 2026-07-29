@@ -10,6 +10,8 @@ import (
 )
 
 func TestResult(t *testing.T) {
+	t.Parallel()
+
 	url := "https://example.net/v1/user/1"
 	expectedBody := `{"name":"saul", "lastName":"goodman"}`
 	expectedCount := 37

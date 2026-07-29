@@ -17,6 +17,8 @@ const (
 )
 
 func TestDebugFlush(t *testing.T) {
+	t.Parallel()
+
 	a := assert.New(t)
 	ob, logs := observer.New(zap.DebugLevel)
 	logger := zap.New(ob).Sugar()

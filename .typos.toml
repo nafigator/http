@@ -54,6 +54,10 @@ extend-ignore-identifiers-re = []
 extend-ignore-words-re = []
 extend-ignore-re = []
 
+[type.md.extend-words]
+# Don't correct the example in README
+Ype = "Ype"
+
 [type.lock]
 extend-glob = []
 binary = false

@@ -7,10 +7,10 @@ require (
 	github.com/nafigator/http/headers v1.0.12
 	github.com/nafigator/http/masker/query v1.0.6
 	github.com/nafigator/http/mime v1.1.1
-	github.com/nafigator/http/storage/debug v1.0.5
+	github.com/nafigator/http/storage/debug v1.0.6
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.6.0
-	go.uber.org/zap v1.27.1
+	go.uber.org/zap v1.28.0
 )
 
 require (

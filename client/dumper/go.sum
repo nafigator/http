@@ -8,8 +8,8 @@ github.com/nafigator/http/masker/query v1.0.6 h1:wStMgXx6DxPqVnnOYN6m+UQ/48smOsC
 github.com/nafigator/http/masker/query v1.0.6/go.mod h1:NBWI1z3pj0xiZro8l5Wr0UbtnU/QCavwNo8wqztT1R4=
 github.com/nafigator/http/mime v1.1.1 h1:m0WR3Q7hzqjanxIxHFncCSY4Xoy4fd/7j/m13EVf8XM=
 github.com/nafigator/http/mime v1.1.1/go.mod h1:LPHxD3p9ShlAgyrmpZbcc3xYTPbqiKQbOCwqLtWdw3w=
-github.com/nafigator/http/storage/debug v1.0.6 h1:T2IUapEqcn+BMlVHtJeRMrQbBYb8EBj2C6FFqXe2Opc=
-github.com/nafigator/http/storage/debug v1.0.6/go.mod h1:ZKs9Q4eCNElaLMwbRrZdF9nnzaSD7lLZUTNPeAsEpn8=
+github.com/nafigator/http/storage/debug v1.0.7 h1:ersZIukS8EARCK4/lVCjoWTQwvmdkUscqkD7L5gzacs=
+github.com/nafigator/http/storage/debug v1.0.7/go.mod h1:C+81G1EhDaiAP5M/yhnmofnJtZVQ1C/TvwG4I6Yftc0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu7U=

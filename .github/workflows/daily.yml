@@ -5,7 +5,6 @@ name: Go
 
 permissions:
   contents: read
-  security-events: write
   actions: read
 
 on:
@@ -52,6 +51,8 @@ jobs:
     name: checks
     needs: detect-modules
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     strategy:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
@@ -84,6 +85,8 @@ jobs:
     name: lint
     needs: detect-modules
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     strategy:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}

@@ -28,7 +28,7 @@ jobs:
           go-version: stable
           cache-dependency-path: '**/go.sum'
       - id: set-modules
-        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
+        run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C cropper/json -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/status -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
 
   tidy:
     name: tidy
@@ -162,6 +162,9 @@ jobs:
       - name: Test client/retry package
         run: go test -C client/retry -gcflags=-l ./... -race -coverprofile=./retry.out -covermode=atomic
 
+      - name: Test cropper/json package
+        run: go test -C cropper/json -gcflags=-l ./... -race -coverprofile=./json.out -covermode=atomic
+
       - name: Test headers package
         run: go test -C headers -gcflags=-l ./... -race -coverprofile=./headers.out -covermode=atomic
 
@@ -196,6 +199,15 @@ jobs:
         uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
         with:
           profile: ./client/retry/retry.out
+          local-prefix: github.com/nafigator/http
+          threshold-file: 100
+          threshold-package: 100
+          threshold-total: 100
+
+      - name: Check cropper/json coverage
+        uses: vladopajic/go-test-coverage@3306bd46e9f0ed238b9d4f7edbbf7b948728469d # v2.11.2
+        with:
+          profile: ./cropper/json/json.out
           local-prefix: github.com/nafigator/http
           threshold-file: 100
           threshold-package: 100
@@ -268,7 +280,7 @@ jobs:
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./response/wrapper/wrapper.out, ./server/dumper/dumper.out, ./storage/debug/debug.out
+          files: ./client/dumper/dumper.out, ./client/retry/retry.out, ./cropper/json/json.out, ./headers/headers.out, ./masker/auth/auth.out, ./masker/json/json.out, ./masker/query/query.out, ./response/wrapper/wrapper.out, ./server/dumper/dumper.out, ./storage/debug/debug.out
           flags: unittests
           name: codecov-http
           verbose: false

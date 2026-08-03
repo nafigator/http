@@ -11,6 +11,9 @@ Collection of Go HTTP packages
 #### client/retry
 [Package](https://github.com/nafigator/http/blob/main/client/retry/README.md) for HTTP-client retries on errors.
 
+#### cropper/json
+[Package](https://github.com/nafigator/http/tree/main/cropper/json) for cropping long string JSON-values of HTTP-dumps.
+
 #### masker/auth
 [Package](https://github.com/nafigator/http/tree/main/masker/auth) for hiding sensitive data in Authorization header of HTTP-dumps.
 

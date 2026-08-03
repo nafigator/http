@@ -45,7 +45,6 @@ const (
 	Cookie                        = "Cookie"
 	Origin                        = "Origin"
 	AcceptDatetime                = "Accept-Datetime"
-	XRequestedWith                = "X-Requested-With"
 	AccessControlAllowOrigin      = "Access-Control-Allow-Origin"
 	AccessControlAllowMethods     = "Access-Control-Allow-Methods"
 	AccessControlAllowHeaders     = "Access-Control-Allow-Headers"
@@ -73,6 +72,9 @@ const (
 
 	// Deprecated X-headers https://datatracker.ietf.org/doc/html/rfc6648.
 
+	XApiKey                = "X-API-Key" //nolint:gosec // False positive
+	XRequestID             = "X-Request-Id"
+	XRequestedWith         = "X-Requested-With"
 	XFrameOptions          = "X-Frame-Options"
 	XXSSProtection         = "X-XSS-Protection"
 	ContentSecurityPolicy  = "Content-Security-Policy"
@@ -85,7 +87,7 @@ const (
 	XHTTPMethodOverride    = "X-HTTP-Method-Override"
 	XForwardedFor          = "X-Forwarded-For"
 	XRealIP                = "X-Real-IP"
-	XCSRFToken             = "X-CSRF-Token" //nolint: gosec // False positive
+	XCSRFToken             = "X-CSRF-Token" //nolint:gosec // False positive
 	XRatelimitLimit        = "X-Ratelimit-Limit"
 	XRatelimitRemaining    = "X-Ratelimit-Remaining"
 	XRatelimitReset        = "X-Ratelimit-Reset"

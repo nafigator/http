@@ -103,6 +103,10 @@ func (h *HTTPDumper) MiddleWare(next http.Handler) http.Handler {
 		}
 
 		dump := string(b)
+		if h.cropper != nil {
+			h.cropper.Crop(&dump)
+		}
+
 		if h.masker != nil {
 			h.masker.Mask(r, &dump)
 		}

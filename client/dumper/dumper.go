@@ -103,6 +103,10 @@ func (h *HTTPDumper) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 
 	dump := string(b)
+	if h.cropper != nil {
+		h.cropper.Crop(&dump)
+	}
+
 	if h.masker != nil {
 		h.masker.Mask(req, &dump)
 	}

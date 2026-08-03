@@ -12,6 +12,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest/observer"
 
+	"github.com/nafigator/http/cropper/json"
 	"github.com/nafigator/http/headers"
 	"github.com/nafigator/http/masker/query"
 	"github.com/nafigator/http/mime"
@@ -37,6 +38,7 @@ const (
 
 type handlerCase struct {
 	responseRecorder http.ResponseWriter
+	cropper          cropper
 	masker           masker
 	expectedError    error
 	request          *http.Request
@@ -61,6 +63,10 @@ func (s *suite) TestRoundTrip() {
 
 			if c.template != "" {
 				d.WithTemplate(c.template)
+			}
+
+			if c.cropper != nil {
+				d.WithCropper(c.cropper)
 			}
 
 			if c.masker != nil {
@@ -174,6 +180,19 @@ func handlerProvider() []handlerCase {
 			responseRecorder: httptest.NewRecorder(),
 			expectedError:    nil,
 			masker:           query.New([]string{"password"}),
+			expected: []observer.LoggedEntry{{
+				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOK},
+				Context: []zapcore.Field{},
+			}},
+			expectedMsgLevel: zap.DebugLevel,
+			expectedMsgCount: 1,
+		},
+		{
+			name:             "200 response with cropper",
+			request:          request,
+			responseRecorder: httptest.NewRecorder(),
+			expectedError:    nil,
+			cropper:          json.New([]string{"password"}),
 			expected: []observer.LoggedEntry{{
 				Entry:   zapcore.Entry{Level: zap.DebugLevel, Message: msgOK},
 				Context: []zapcore.Field{},

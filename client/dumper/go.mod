@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	bou.ke/monkey v1.0.2
+	github.com/nafigator/http/cropper/json v1.0.0
 	github.com/nafigator/http/headers v1.0.12
 	github.com/nafigator/http/masker/query v1.0.6
 	github.com/nafigator/http/mime v1.1.1

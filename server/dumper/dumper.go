@@ -16,6 +16,10 @@ const (
 	defaultTemplate = "HTTP dump:\n%s\n\n%s\n"
 )
 
+type cropper interface {
+	Crop(*string)
+}
+
 type masker interface {
 	Mask(*http.Request, *string)
 }
@@ -29,6 +33,7 @@ type logger interface {
 }
 
 type HTTPDumper struct {
+	cropper  cropper
 	masker   masker
 	flusher  flusher
 	log      logger
@@ -50,6 +55,13 @@ func New(
 // WithTemplate initializes new custom output template.
 func (h *HTTPDumper) WithTemplate(t string) *HTTPDumper {
 	h.template = t
+
+	return h
+}
+
+// WithCropper initializes data cropper for dumper output.
+func (h *HTTPDumper) WithCropper(c cropper) *HTTPDumper {
+	h.cropper = c
 
 	return h
 }

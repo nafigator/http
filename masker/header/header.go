@@ -44,11 +44,11 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 
 	s = strings.Repeat("*", replacementLength) + s[replacementLength:]
 
-	re := regexp.MustCompile("(" + regexp.QuoteMeta(m.header) + "\\s*:\\s*)[^\\r]+\\r\\n")
+	re := regexp.MustCompile("((?i)" + regexp.QuoteMeta(m.header) + ")\\s*:\\s*[^\\r]+\\r\\n")
 	match := re.FindStringSubmatch(*dump)
 
 	if match != nil {
-		*dump = re.ReplaceAllString(*dump, match[1]+s+"\r\n")
+		*dump = re.ReplaceAllString(*dump, match[1]+": "+s+"\r\n")
 	}
 
 	if m.next != nil {

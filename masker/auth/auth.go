@@ -11,7 +11,7 @@ import (
 
 const (
 	defaultUnmaskedLength = 7
-	headerTemplate        = "Authorization: "
+	headerTemplate        = "((?i)Authorization)\\s*:\\s*"
 )
 
 type next interface {
@@ -40,8 +40,8 @@ func (m *Masker) Mask(req *http.Request, dump *string) {
 		s[secretIdx] = strings.Repeat("*", replacementLength) + s[secretIdx][replacementLength:]
 	}
 
-	var re = regexp.MustCompile(headerTemplate + ".+\\r\\n")
-	*dump = re.ReplaceAllString(*dump, headerTemplate+strings.Join(s, " ")+"\r\n")
+	re := regexp.MustCompile(headerTemplate + ".+\\r\\n")
+	*dump = re.ReplaceAllString(*dump, headers.Authorization+": "+strings.Join(s, " ")+"\r\n")
 
 	if m.next != nil {
 		m.next.Mask(req, dump)

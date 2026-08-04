@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/nafigator/pointer"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,7 +23,12 @@ func TestMask(t *testing.T) {
 	for name, c := range dataProvider() {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
-			a := New().WithNext(c.next)
+
+			a := New()
+
+			if c.next != nil {
+				a.WithNext(c.next)
+			}
 
 			if c.unmasked != nil {
 				a.WithUnmasked(*c.unmasked)
@@ -56,7 +62,7 @@ func dataProvider() map[string]testCase {
 			dump:     "API exchange\nGET /user/151 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 			expected: "API exchange\nGET /user/151 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ************************forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 		},
-		"request with bearer and zero replacement length": {
+		"request with bearer and token length less than default unmasked": {
 			request: http.Request{
 				ProtoMajor: 1,
 				ProtoMinor: 1,
@@ -132,7 +138,7 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			unmasked: toPtr(4),
+			unmasked: pointer.New(4),
 			dump:     "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 			expected: "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer ***************************ever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 		},
@@ -152,14 +158,9 @@ func dataProvider() map[string]testCase {
 				},
 				Host: "avito.ru",
 			},
-			unmasked: toPtr(0),
+			unmasked: pointer.New(0),
 			dump:     "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer super-secret-mega-token-forever\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 			expected: "API exchange\nGET /user/155 HTTP/1.1\r\nHost: avito.ru\r\nUser-Agent: Go-http-client/1.1\r\nAuthorization: Bearer *******************************\r\nAccept-Encoding: gzip\r\n\r\n\n", //nolint:lll	// In test it's ok
 		},
 	}
-}
-
-// toPtr returns pointer to type.
-func toPtr[T any](s T) *T {
-	return &s
 }

@@ -1,4 +1,4 @@
-module github.com/nafigator/http/masker/auth
+module github.com/nafigator/http/masker/header
 
 go 1.23.0
 

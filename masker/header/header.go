@@ -1,17 +1,14 @@
-// Package auth provides Authorization header value masking functionality for HTTP dumps.
-package auth
+// Package header provides header value masking functionality for HTTP dumps.
+package header
 
 import (
 	"net/http"
 	"regexp"
 	"strings"
-
-	"github.com/nafigator/http/headers"
 )
 
 const (
 	defaultUnmaskedLength = 7
-	headerTemplate        = "Authorization: "
 )
 
 type next interface {
@@ -20,28 +17,39 @@ type next interface {
 
 type Masker struct {
 	next     next
+	header   string
 	unmasked int
 }
 
 // New creates masker instance.
-func New() *Masker {
+func New(h string) *Masker {
 	return &Masker{
 		unmasked: defaultUnmaskedLength,
+		header:   h,
 	}
 }
 
-// Mask masks value of Authorization header.
+// Mask masks value of header.
 func (m *Masker) Mask(req *http.Request, dump *string) {
-	s := strings.Fields(req.Header.Get(headers.Authorization))
-	if len(s) > 0 {
-		secretIdx := len(s) - 1
-		replacementLength := max(len(s[secretIdx])-m.unmasked, 0)
+	if m.header == "" {
+		if m.next != nil {
+			m.next.Mask(req, dump)
+		}
 
-		s[secretIdx] = strings.Repeat("*", replacementLength) + s[secretIdx][replacementLength:]
+		return
 	}
 
-	var re = regexp.MustCompile(headerTemplate + ".+\\r\\n")
-	*dump = re.ReplaceAllString(*dump, headerTemplate+strings.Join(s, " ")+"\r\n")
+	s := req.Header.Get(m.header)
+	replacementLength := max(len(s)-m.unmasked, 0)
+
+	s = strings.Repeat("*", replacementLength) + s[replacementLength:]
+
+	re := regexp.MustCompile("(" + regexp.QuoteMeta(m.header) + "\\s*:\\s*)[^\\r]+\\r\\n")
+	match := re.FindStringSubmatch(*dump)
+
+	if match != nil {
+		*dump = re.ReplaceAllString(*dump, match[1]+s+"\r\n")
+	}
 
 	if m.next != nil {
 		m.next.Mask(req, dump)

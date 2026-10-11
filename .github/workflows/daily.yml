@@ -14,7 +14,7 @@ on:
     - cron: '33 2 * * *'
 
 env:
-  GOLANGCI_LINT_VERSION: 'v2.13.1'
+  GOLANGCI_LINT_VERSION: 'v2.14.0'
 
 jobs:
   detect-modules:
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: 1.27.1
+          go-version: stable
           cache-dependency-path: '**/go.sum'
       - id: set-modules
         run: echo modules=$(echo $(go list -C client/dumper -m -json; go list -C client/retry -m -json; go list -C cropper/json -m -json; go list -C headers -m -json; go list -C masker/auth -m -json; go list -C masker/header -m -json; go list -C masker/json -m -json; go list -C masker/query -m -json; go list -C mime -m -json; go list -C response/status -m -json; go list -C response/wrapper -m -json; go list -C server/dumper -m -json; go list -C storage/debug -m -json) | jq -s '.' | jq -c '[.[].Dir]') >> $GITHUB_OUTPUT
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           cache-dependency-path: 'go.sum'
-          go-version: 1.27.1
+          go-version: stable
       - name: Run tidy
         working-directory: ${{ matrix.modules }}
         run: go mod tidy --diff
@@ -56,7 +56,7 @@ jobs:
     strategy:
       matrix:
         modules: ${{ fromJSON(needs.detect-modules.outputs.modules) }}
-        go-version: [ 1.27.1 ]
+        go-version: [ oldstable, stable ]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
@@ -94,7 +94,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: 1.27.1
+          go-version: stable
           cache-dependency-path: 'go.sum'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: [ 1.27.1 ]
+        go-version: [ stable, oldstable ]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up Go

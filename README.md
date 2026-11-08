@@ -63,7 +63,7 @@ as a public API. Read more on [SemVer.org][semver src].
 
 [License img]: https://img.shields.io/github/license/nafigator/http?color=teal
 [License src]: https://www.tldrlegal.com/license/mit-license
-[Github main status src]: https://github.com/nafigator/http/tree/main
+[Github main status src]: https://github.com/nafigator/http/actions/workflows/daily.yml?query=branch%3Amain
 [Github main status badge]: https://github.com/nafigator/http/actions/workflows/daily.yml/badge.svg?branch=main
 [Codecov report src]: https://app.codecov.io/gh/nafigator/http/tree/main
 [Codecov report badge]: https://codecov.io/gh/nafigator/http/branch/main/graph/badge.svg

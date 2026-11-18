@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"bou.ke/monkey"
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -86,10 +85,8 @@ func (s *suite) TestRoundTrip() {
 				Times(1)
 
 			if c.usePatch > 0 {
-				applyPatch(c.usePatch)
-				defer func() {
-					monkey.UnpatchAll()
-				}()
+				patches := applyPatch(c.usePatch) // applyPatch теперь возвращает *gomonkey.Patches
+				defer patches.Reset()             // вместо monkey.UnpatchAll()
 			}
 
 			actualResponse, err := d.RoundTrip(c.request)

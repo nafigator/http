@@ -3,7 +3,7 @@ module github.com/nafigator/http/client/dumper
 go 1.23.0
 
 require (
-	bou.ke/monkey v1.0.2
+	github.com/agiledragon/gomonkey/v2 v2.14.4
 	github.com/nafigator/http/cropper/json v1.0.0
 	github.com/nafigator/http/headers v1.0.13
 	github.com/nafigator/http/masker/query v1.0.6

@@ -6,7 +6,7 @@ import (
 	"net/http/httputil"
 	"testing"
 
-	"bou.ke/monkey"
+	"github.com/agiledragon/gomonkey/v2"
 	ss "github.com/stretchr/testify/suite"
 )
 
@@ -27,17 +27,17 @@ func TestRun(t *testing.T) {
 	ss.Run(t, &suite{})
 }
 
-func applyPatch(p patch) *monkey.PatchGuard {
+func applyPatch(p patch) *gomonkey.Patches {
 	switch p {
 	case patchDumpResponse:
-		return monkey.Patch(httputil.DumpResponse, func(_ *http.Response, _ bool) ([]byte, error) {
+		return gomonkey.ApplyFunc(httputil.DumpResponse, func(_ *http.Response, _ bool) ([]byte, error) {
 			return nil, errors.New("dump response error")
 		})
 	case patchDumpRequest:
-		return monkey.Patch(httputil.DumpRequest, func(_ *http.Request, _ bool) ([]byte, error) {
+		return gomonkey.ApplyFunc(httputil.DumpRequest, func(_ *http.Request, _ bool) ([]byte, error) {
 			return nil, errors.New("dump request error")
 		})
 	}
 
-	return nil
+	return &gomonkey.Patches{}
 }
